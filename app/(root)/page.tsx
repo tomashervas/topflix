@@ -5,6 +5,8 @@ import { redirect } from 'next/navigation'
 import SignOutBtn from './components/SignOutBtn'
 import Navbar from './components/Navbar'
 import Billboard from './components/Billboard'
+import MovieList from './components/MovieList'
+import { Movie } from '@/models/movie'
 
 export default async function Home() {
 
@@ -17,6 +19,7 @@ export default async function Home() {
   return (
     <>
       <Billboard />
+      <MovieList title='Destacado' />
     </>
   )
 }
