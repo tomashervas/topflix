@@ -7,6 +7,7 @@ import Navbar from './components/Navbar'
 import Billboard from './components/Billboard'
 import MovieList from './components/MovieList'
 import { Movie } from '@/models/movie'
+import FavoritesList from './components/FavoritesList'
 
 export default async function Home() {
 
@@ -20,6 +21,7 @@ export default async function Home() {
     <>
       <Billboard />
       <MovieList title='Destacado' />
+      <FavoritesList title='Favoritos' />
     </>
   )
 }

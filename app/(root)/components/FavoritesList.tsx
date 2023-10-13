@@ -8,14 +8,13 @@ interface MovieListProps {
     title: string
 }
 
-const MovieList = ({ title}: MovieListProps) => {
-    const {data}: {data: Movie[]} = useFetch('/api/movies')
+const FavoritesList = ({ title}: MovieListProps) => {
+    const {data}: {data: Movie[]} = useFetch('/api/favorites')
     
     if (!data || !data.length) {
         return null
     }
 
-  
     
   return (
     <div className="space-y-4 md:p-8 p-4">
@@ -28,4 +27,4 @@ const MovieList = ({ title}: MovieListProps) => {
     </div>
   )
 }
-export default MovieList
+export default FavoritesList

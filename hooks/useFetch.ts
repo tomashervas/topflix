@@ -3,7 +3,7 @@ import useSWR from 'swr'
 
 const useFetch = (apiUrl:string) => {
     const fetcher = (url:string) => axios.get(url).then(res => res.data)
-    const { data, error, isLoading } = useSWR(apiUrl, fetcher, {
+    const { data, error, isLoading, mutate } = useSWR(apiUrl, fetcher, {
         revalidateOnFocus: false,
         revalidateIfStale: false,
         revalidateOnReconnect: false
@@ -12,7 +12,8 @@ const useFetch = (apiUrl:string) => {
     return {
         data,
         error,
-        isLoading
+        isLoading,
+        mutate
     }
 }
 
