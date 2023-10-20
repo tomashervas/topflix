@@ -30,5 +30,17 @@
        "thumbnailUrl":"https://download.blender.org/ED/cover.jpg",
        "genre":"Sci-Fi",
        "duration":"15 minutes"
+    },
+    {
+      "idTMDB": 603,
+      "title": "The Matrix",
+      "overview": "When a beautiful stranger leads computer hacker Neo to a forbidding underworld, he discovers the shocking truth--the life he knows is the elaborate deception of an evil cyber-intelligence.",
+      "videoUrl": "https://www.youtube.com/watch?v=vKQi3bBA1y8&ab_channel=RottenTomatoesClassicTrailers",
+      "thumbnailUrl": "https://m.media-amazon.com/images/M/MV5BNzQzOTk3OTAtNDQ0Zi00ZTVkLWI0MTEtMDllZjNkYzNjNTc4L2ltYWdlXkEyXkFqcGdeQXVyNjU0OTQ0OTY@._V1_.jpg",
+      "genres": ["Drama", "Sci-Fi"],
+      "release_date": "1999-03-30",
+      "duration": "136",
+      "vote_average": 8.7
     }
+
  ]

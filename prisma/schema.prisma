@@ -63,10 +63,29 @@ model VerificationToken {
 
 model Movie {
   id String @id @default(auto()) @map("_id") @db.ObjectId
+  idTMDB Int @unique
+  name String
   title String
-  description String
+  overview String
   videoUrl String
   thumbnailUrl String
-  genre String
-  duration String
+  backdropUrl String
+  images String[] 
+  director String[]
+  cast Cast[]
+  genres String[]
+  release_date String
+  vote_average Float
+  duration Int
+  content_rating String
+  budget Int?
+  revenue Int?
+  tagline String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+type Cast {
+  name String
+  character String
 }

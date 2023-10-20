@@ -21,7 +21,7 @@ export default async function Home() {
     <>
       <Billboard />
       <MovieList title='Destacado' />
-      <FavoritesList title='Favoritos' />
+      <FavoritesList title='Mi lista' />
     </>
   )
 }
