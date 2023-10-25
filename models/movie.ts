@@ -20,6 +20,7 @@ export interface Movie {
     tagline?: string,
     createdAt?: Date,
     updatedAt?: Date,
+    trailer?: string
   }
   
 type Cast = {

@@ -23,7 +23,9 @@ const BillboardVideo = ({movie}: BillboardVideoProps) => {
 
   return (
     <div>
-        <video className="mt-12 w-full aspect-[16/9] md:h-[56.25vw] object-cover overflow-hidden" muted loop controls poster={movie?.backdropUrl} autoPlay src={movie?.videoUrl}></video>
+        {movie?.trailer ?
+        <iframe className="mt-12 w-full aspect-[16/9] h-[40vh] md:h-[56.25vw] object-cover overflow-hidden" src={movie?.trailer}></iframe> :
+        <video className="mt-12 w-full aspect-[16/9] h-[60vh] md:h-[56.25vw] object-cover overflow-hidden"  muted autoPlay loop poster={movie?.thumbnailUrl} src={movie?.trailer}></video> }
     </div>
   )
 }

@@ -69,23 +69,71 @@ model Movie {
   overview String
   videoUrl String
   thumbnailUrl String
-  backdropUrl String
+  backdropUrl String?
   images String[] 
   director String[]
   cast Cast[]
   genres String[]
-  release_date String
-  vote_average Float
-  duration Int
-  content_rating String
+  release_date String?
+  vote_average Float?
+  duration Int?
+  content_rating String?
   budget Int?
   revenue Int?
   tagline String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  trailer String?
 }
 
 type Cast {
   name String
   character String
+}
+
+model TVShow {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  idTMDB Int @unique
+  name String
+  nameShow String
+  overview String?
+  thumbnailUrl String
+  backdropUrl String?
+  images String[]
+  genres String[]
+  created_by String[]
+  first_air_date String?
+  last_air_date String?
+  vote_average Float?
+  duration Int?
+  content_rating String?
+  tagline String?
+  trailer String?
+  seasons Season[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  }
+
+type Season {
+  id_season Int
+  season_number Int
+  air_date String?
+  poster_path String?
+  episode_count Int
+  name String
+  overview String?
+  episodes Episode[]
+}
+
+type Episode {
+  id_episode Int
+  air_date String?
+  episode_number Int
+  name String
+  overview String?
+  runtime Int?
+  still_path String?
+  season_number Int
+  show_id Int
+  videoUrl String?
 }
