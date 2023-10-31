@@ -1,14 +1,15 @@
 import useFetch from "@/hooks/useFetch"
-import { Movie } from "@/models/movie"
+import { Movie, TVShow } from "@prisma/client"
 import axios from "axios"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import { FaCirclePlus, FaCheck } from 'react-icons/fa6'
-interface MovieListProps {
-    movie: Movie
+interface CardProps {
+    item: TVShow | Movie
+    isMovie: boolean
 }
 
-const MovieCard = ({movie}: MovieListProps) => {
+const Card = ({item, isMovie}: CardProps) => {
 
   const {data: favorites, mutate}: {data: Movie[], mutate: Function} = useFetch('/api/favorites')
   const [isFavourite, setIsFavourite] = useState(false)
@@ -19,7 +20,7 @@ const MovieCard = ({movie}: MovieListProps) => {
     if(favorites.length === 0){
       setIsFavourite(false)
     } else{
-      setIsFavourite(favorites.some(favorite => favorite.id === movie.id))
+      setIsFavourite(favorites.some(favorite => favorite.id === item.id))
     }
   },[favorites])
 
@@ -29,14 +30,14 @@ const MovieCard = ({movie}: MovieListProps) => {
     if(isFavourite){
       console.log('ya no es favorito')
       setIsFavourite(false)
-      const res = await axios.delete(`/api/favorites/${movie.id}`)
+      const res = await axios.delete(`/api/favorites/${item.id}`)
       console.log(res.data)
 
     }
     else {
       console.log('es favorito')
       setIsFavourite(true)
-      const res = await axios.post(`/api/favorites/${movie.id}`)
+      const res = await axios.post(`/api/favorites/${item.id}`)
       console.log(res.data)
     }
     mutate()
@@ -45,11 +46,11 @@ const MovieCard = ({movie}: MovieListProps) => {
 
   return (
     <div className="group h-36 md:h-52 aspect-[2/3] bg-zinc-900 relative">
-        <img  className="object-cover cursor-pointer rounded-md shadow-xl transition group-hover:opacity-70"  src={movie.thumbnailUrl} alt={movie.title} />
-        <div onClick={()=>router.push(`movies/${movie.id!}`)} className="bg-gradient-to-t from-black via-transparent via-30%  to-transparent  absolute top-0 left-0 cursor-pointer w-full h-full"></div>
-        <div className="absolute bottom-0 p-1 text-xs sm:text-base ">{movie.title}</div>
+        <img  className="object-cover cursor-pointer rounded-md shadow-xl transition group-hover:opacity-70"  src={item.thumbnailUrl} alt="" />
+        <div onClick={()=>router.push(`${isMovie ? '/movies' : '/tvshows'}/${item.id!}`)} className="bg-gradient-to-t from-black via-transparent via-30%  to-transparent  absolute top-0 left-0 cursor-pointer w-full h-full"></div>
+        <div className="absolute bottom-0 p-1 text-xs sm:text-base ">{isMovie ? ( item as Movie).title : (item as TVShow).name}</div>
         <button className="absolute bottom-2 right-2 md:bottom-3 md:right-3 text-md md:text-xl" onClick={toggleFavourite}>{isFavourite ? <FaCheck /> : <FaCirclePlus />}</button>
     </div>
   )
 }
-export default MovieCard
+export default Card

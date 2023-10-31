@@ -1,8 +1,8 @@
 "use client"
 
 import useFetch from "@/hooks/useFetch"
-import { Movie } from "@/models/movie"
-import MovieCard from "./MovieCard"
+import Card from "./Card"
+import { Movie } from "@prisma/client"
 
 interface MovieListProps {
     title: string
@@ -21,7 +21,7 @@ const FavoritesList = ({ title}: MovieListProps) => {
         <h3 className="text-xl md:text-2xl font-semibold">{title}</h3>
         <div className="flex flex-nowrap overflow-auto space-x-3 md:space-x-5 md:scrollbar-thin scrollbar-thumb-zinc-800 scrollbar-track-transparent md:pb-4">
             {data.map((movie) => (
-                <MovieCard key={movie.id} movie={movie}/>
+                <Card key={movie.id} item={movie} isMovie/>
             ))}
         </div>
     </div>

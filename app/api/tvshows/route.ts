@@ -1,6 +1,25 @@
 import { NextResponse } from 'next/server'
 import prismadb from '@/lib/prismadb'
 import { TVShow } from '@prisma/client'
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/auth';
+
+
+export async function GET(){
+    const session = await getServerSession(authOptions);
+    if(!session) {
+        return new Response("Unauthorized", {status: 401})
+    }
+    
+    try {
+        const tv = await prismadb.tVShow.findMany()
+        return new Response(JSON.stringify(tv))
+
+    } catch (error) {
+        return new Response("Error" + error, {status: 500})
+    }
+
+}
 
 export async function POST(req: Request) {
     const tv: TVShow = await req.json()    

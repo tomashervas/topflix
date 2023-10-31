@@ -28,16 +28,19 @@ const Billboard = () => {
     
 
   return (
-    <div className="relative w-full  md:h-[56.25vw] overflow-hidden mt-12">
+    <div className="relative w-full  md:h-[56.25vw] overflow-hidden mt-12 flex justify-center">
         {/* atoplay! */}
         {data?.trailer ?
-        <iframe className="w-full h-[40vh] md:h-[56.25vw] object-cover brightness-[60%] overflow-hidden" src={data?.trailer}></iframe> :
-        <video className="w-full h-[60vh] md:h-[56.25vw] object-cover brightness-[60%] overflow-hidden"  muted autoPlay loop poster={poster} src={data?.trailer}></video> }
-        <div className="absolute bottom-[5%] md:bottom-[40%] ml-4 md:ml-16 flex flex-row items-end  md:flex-col md:items-start gap-2">
+        <iframe className="w-auto md:w-full h-[40vh] aspect-[3/2]  md:h-[56.25vw] object-cover bg-center brightness-[60%] overflow-hidden" src={data?.trailer}></iframe> :
+        <video className="w-full h-[40vh] md:h-[56.25vw] object-cover brightness-[60%] overflow-hidden"  muted autoPlay loop poster={poster} src={data?.trailer}></video> }
+        <div className="absolute top-[15%] md:top-[40%] w-full p-4 md:ml-16">
             <p className="text-2xl md:text-5xl lg:text-6xl font-bold drop-shadow-xl">{data?.title}</p>
-            <p className="text-white md:w-[50%] hidden md:block drop-shadow-xl">{data?.overview}</p>
-            <div className="flex mt-4">
-                <button className="flex items-center gap-2 bg-zinc-500 bg-opacity-60 hover:bg-opacity-40 py-2 px-4 font-semibold rounded-full md:rounded-md transition"><GoInfo size={20}/><span className="hidden md:block">Más información</span></button>
+            <div className="">
+              <p className="line-clamp-3 text-white md:w-[50%] hidden md:[display:-webkit-box] drop-shadow-xl">{data?.overview}</p>
+
+            </div>
+            <div >
+                <button className="flex items-center gap-2 bg-zinc-500 bg-opacity-60 hover:bg-opacity-40 py-2 px-4 my-3 font-semibold rounded-full md:rounded-md transition"><GoInfo size={20}/><span className="hidden md:block">Más información</span></button>
             </div>
         </div>
     </div>

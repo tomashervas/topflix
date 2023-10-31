@@ -5,21 +5,20 @@ import { Movie } from "@/models/movie"
 import { useCallback, useEffect, useState } from "react"
 
 interface BudgetProps {
-  movie: Movie
+  rating: string | null | undefined
 }
-const Budget = ({movie} : BudgetProps) => {
+const Budget = ({rating} : BudgetProps) => {
 
   const [ratingColor, setRatingColor] = useState("")
 
   useEffect(() => {
-    console.log(ratingColor)
-    const color = getRatingColor(movie?.content_rating!)
+    const color = getRatingColor(rating!)
     setRatingColor(color)
-  }, [movie])
+  }, [rating])
 
   return (
     <div style={{backgroundColor: ratingColor, borderRadius: "5px"}}>
-      <p className="px-2">{movie?.content_rating}</p>
+      <p className="px-2">{rating}</p>
     </div>
   )
 }
