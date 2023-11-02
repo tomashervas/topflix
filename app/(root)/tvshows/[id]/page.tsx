@@ -7,6 +7,11 @@ import Player from "../../components/Player";
 import { Episode, TVShow } from "@prisma/client";
 import Seasons from "../../components/Seasons";
 
+import Vibrant from 'node-vibrant'
+
+
+
+
 const TVShowPage = async ({params}:{params: {id: string}}) => {
 
 
@@ -16,9 +21,16 @@ const TVShowPage = async ({params}:{params: {id: string}}) => {
         }
     })
 
+    const palette = await Vibrant.from(tv?.thumbnailUrl!).getPalette()
+    const arrayPalette =  Object.values(palette)
+    const sortedArray = arrayPalette.sort((a, b) => b!.population - a!.population)
+    const colorA = sortedArray[0]?.hex!
+    const colorB = sortedArray[1]?.hex!
+    console.log(colorA, colorB)
+
   return (
     <div>
-        <BillboardVideo media={tv as TVShow}/>
+        <BillboardVideo media={tv as TVShow} colors={[colorA, colorB]}/>
         <div className="p-4 md:p-8">
             <p>Serie</p>
             <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold py-1">{tv?.nameShow}</h1>

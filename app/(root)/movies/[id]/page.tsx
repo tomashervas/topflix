@@ -4,6 +4,7 @@ import BillboardVideo from "../../components/BillboardVideo";
 import { Movie } from "@/models/movie";
 import Budget from "../../components/Budget";
 import MoviePlayer from "../../components/MoviePlayer";
+import Vibrant from "node-vibrant";
 
 const MoviePage = async ({params}:{params: {id: string}}) => {
 
@@ -13,9 +14,17 @@ const MoviePage = async ({params}:{params: {id: string}}) => {
             id: params.id
         }
     })
+
+    const palette = await Vibrant.from(movie?.thumbnailUrl!).getPalette()
+    const arrayPalette =  Object.values(palette)
+    const sortedArray = arrayPalette.sort((a, b) => b!.population - a!.population)
+    const colorA = sortedArray[0]?.hex!
+    const colorB = sortedArray[1]?.hex!
+    console.log(colorA, colorB)
+
   return (
     <div>
-        <BillboardVideo media={movie as Movie}/>
+        <BillboardVideo colors={[colorA, colorB]} media={movie as Movie}/>
         <div className="p-4">
             <p>Película</p>
             <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold py-1">{movie?.title}</h1>

@@ -6,7 +6,7 @@ import { useEffect, useState } from "react"
 import { GoInfo } from "react-icons/go"
 
 
-const Billboard = () => {
+const Billboard =  () => {
 
     const {data}:{data: Movie} = useFetch('/api/random')
     const [mounted, setMounted] = useState(false)
@@ -32,7 +32,11 @@ const Billboard = () => {
         {/* atoplay! */}
         {data?.trailer ?
         <iframe className="w-auto md:w-full h-[40vh] aspect-[3/2]  md:h-[56.25vw] object-cover bg-center brightness-[60%] overflow-hidden" src={data?.trailer}></iframe> :
-        <video className="w-full h-[40vh] md:h-[56.25vw] object-cover brightness-[60%] overflow-hidden"  muted autoPlay loop poster={poster} src={data?.trailer}></video> }
+        <div className={'p-6 md:p-0'}>
+          <div className="mt-12 w-full aspect-[16/9] h-[50vh] md:h-[56.25vw] object-cover overflow-hidden">
+            <img src={poster} alt="" />
+          </div>
+        </div> }
         <div className="absolute top-[15%] md:top-[40%] w-full p-4 md:ml-16">
             <p className="text-2xl md:text-5xl lg:text-6xl font-bold drop-shadow-xl">{data?.title}</p>
             <div className="">

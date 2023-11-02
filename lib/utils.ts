@@ -1,3 +1,4 @@
+
 export const getRatingColor = (rating: string) => {
     if(rating == "APTA") return "#22c55e"
     if(rating == "TP") return "#22c55e"
