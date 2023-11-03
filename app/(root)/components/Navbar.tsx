@@ -4,6 +4,7 @@ import ProfileMenu from "./ProfileMenu"
 import SignOutBtn from "./SignOutBtn"
 import NavMenu from "./NavMenu"
 import Link from "next/link"
+import Search from "./Search"
 
 const Navbar = () => {
   return (
@@ -15,7 +16,10 @@ const Navbar = () => {
               </Link>
               <NavMenu />
             </div>
-            <ProfileMenu />
+            <div className="flex items-center space-x-4">
+              <Search />
+              <ProfileMenu />
+            </div>
          </div>
 
     </nav>
