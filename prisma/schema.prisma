@@ -20,6 +20,7 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   favoriteIds String[] @db.ObjectId
+  favoriteTVIds String[] @db.ObjectId
   sessions Session[]
   accounts Account[]
 }

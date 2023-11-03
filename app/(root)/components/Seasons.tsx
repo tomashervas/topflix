@@ -28,6 +28,7 @@ const Seasons = ({tv}: SeasonsProps) => {
             setValue(value?.value!)
         }}
         unstyled
+        isSearchable={false}
         placeholder="Temporada..."
         options={tv?.seasons.filter((season) => season.season_number !== 0).map((season) => ({value: season.season_number, label: `Temporada ${season.season_number}`}))}/>
             {tv?.seasons.filter(s=>s.season_number === value).map((season) => (

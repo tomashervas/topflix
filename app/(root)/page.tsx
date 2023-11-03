@@ -14,13 +14,14 @@ export default async function Home() {
   const session = await getServerSession(authOptions)
 
   if(!session) {
-    return redirect('http://192.168.0.19:3000/auth')
+    return redirect('http://localhost:3000/auth')
   }
 
   return (
     <>
       <Billboard />
-      <FavoritesList title='Mi lista' />
+      <FavoritesList title='Mi lista: peliculas' isMovie/>
+      <FavoritesList title='Mi lista: series' isMovie={false}/>
       <ScrollList title='Destacado: películas' url='/api/movies' isMovie/>
       <ScrollList title='Destacado: series' url='/api/tvshows' isMovie={false}/>
 

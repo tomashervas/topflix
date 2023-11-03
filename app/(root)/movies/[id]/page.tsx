@@ -20,7 +20,6 @@ const MoviePage = async ({params}:{params: {id: string}}) => {
     const sortedArray = arrayPalette.sort((a, b) => b!.population - a!.population)
     const colorA = sortedArray[0]?.hex!
     const colorB = sortedArray[1]?.hex!
-    console.log(colorA, colorB)
 
   return (
     <div>

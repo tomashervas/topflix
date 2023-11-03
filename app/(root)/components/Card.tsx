@@ -11,7 +11,7 @@ interface CardProps {
 
 const Card = ({item, isMovie}: CardProps) => {
 
-  const {data: favorites, mutate}: {data: Movie[], mutate: Function} = useFetch('/api/favorites')
+  const {data: favorites, mutate}: {data: Movie[] | TVShow[], mutate: Function} = useFetch(isMovie ? '/api/favorites' : '/api/favoritestv')
   const [isFavourite, setIsFavourite] = useState(false)
   const router = useRouter()
   
@@ -30,14 +30,14 @@ const Card = ({item, isMovie}: CardProps) => {
     if(isFavourite){
       console.log('ya no es favorito')
       setIsFavourite(false)
-      const res = await axios.delete(`/api/favorites/${item.id}`)
+      const res = await axios.delete(isMovie ? `/api/favorites/${item.id}` : `/api/favoritestv/${item.id}`)
       console.log(res.data)
 
     }
     else {
       console.log('es favorito')
       setIsFavourite(true)
-      const res = await axios.post(`/api/favorites/${item.id}`)
+      const res = await axios.post(isMovie ? `/api/favorites/${item.id}` : `/api/favoritestv/${item.id}`)
       console.log(res.data)
     }
     mutate()

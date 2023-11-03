@@ -12,7 +12,12 @@ export async function GET(){
     }
     
     try {
-        const tv = await prismadb.tVShow.findMany()
+        const tv = await prismadb.tVShow.findMany({
+            orderBy: {
+                createdAt: 'desc'
+            },
+            take: 20
+        })
         return new Response(JSON.stringify(tv))
 
     } catch (error) {

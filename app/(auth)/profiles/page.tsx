@@ -7,7 +7,7 @@ const ProfilesPage = async () => {
     const session = await getServerSession(authOptions)
 
     if(!session) {
-        return redirect('http://192.168.0.19:3000/auth')
+        return redirect('http://localhost:3000/auth')
     }
 
   return (

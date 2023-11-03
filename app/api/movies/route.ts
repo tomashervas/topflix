@@ -10,7 +10,12 @@ export async function GET(){
     }
     
     try {
-        const movies = await prismadb.movie.findMany()
+        const movies = await prismadb.movie.findMany({
+            orderBy: {
+                createdAt: 'desc'
+            },
+            take: 20
+        })
         return new Response(JSON.stringify(movies))
 
     } catch (error) {
