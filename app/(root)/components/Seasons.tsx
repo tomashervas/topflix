@@ -10,7 +10,6 @@ interface SeasonsProps {
     tv: TVShow
 }
 const Seasons = ({tv}: SeasonsProps) => {
-
     const [value, setValue] = useState<number>(0)
     const [showPlayer, setShowPlayer] = useState(false)
     const [episode, setEpisode] = useState(tv?.seasons[0].episodes[0])

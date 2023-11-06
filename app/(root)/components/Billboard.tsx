@@ -2,6 +2,7 @@
 
 import useFetch from "@/hooks/useFetch"
 import { Movie } from "@/models/movie"
+import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import { GoInfo } from "react-icons/go"
 
@@ -11,6 +12,7 @@ const Billboard =  () => {
     const {data}:{data: Movie} = useFetch('/api/random')
     const [mounted, setMounted] = useState(false)
     const [poster, setPoster] = useState('')
+    const router = useRouter()
 
     useEffect(() => {
       setMounted(true)
@@ -44,7 +46,7 @@ const Billboard =  () => {
 
             </div>
             <div >
-                <button className="flex items-center gap-2 bg-zinc-500 bg-opacity-60 hover:bg-opacity-40 py-2 px-4 my-3 font-semibold rounded-full md:rounded-md transition"><GoInfo size={20}/><span className="hidden md:block">Más información</span></button>
+                <button className="flex items-center gap-2 bg-zinc-500 bg-opacity-60 hover:bg-opacity-40 py-2 px-4 my-3 font-semibold rounded-full md:rounded-md transition" onClick={() => router.push(`/movies/${data?.id}`)}><GoInfo size={20}/><span className="hidden md:block">Más información</span></button>
             </div>
         </div>
     </div>

@@ -14,12 +14,12 @@ const MoviePage = async ({params}:{params: {id: string}}) => {
             id: params.id
         }
     })
-
     const palette = await Vibrant.from(movie?.thumbnailUrl!).getPalette()
     const arrayPalette =  Object.values(palette)
     const sortedArray = arrayPalette.sort((a, b) => b!.population - a!.population)
     const colorA = sortedArray[0]?.hex!
     const colorB = sortedArray[1]?.hex!
+
 
   return (
     <div>

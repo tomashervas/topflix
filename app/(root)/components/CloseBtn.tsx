@@ -7,9 +7,9 @@ interface CloseBtnProps {
 
 const CloseBtn = ({setAction}: CloseBtnProps) => {
   return (
-    <div onClick={setAction}>
-      <FaX size={20} className="z-40 text-zinc-400 absolute top-4 right-4 cursor-pointer" />
-    </div>
+    <button onClick={setAction} className='z-40 p-4 text-zinc-400 absolute top-0 right-0 cursor-pointer'>
+      <FaX size={20} className="" />
+    </button>
   )
 }
 export default CloseBtn
