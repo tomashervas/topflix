@@ -4,13 +4,13 @@ import useFetch from "@/hooks/useFetch"
 import Card from "./Card"
 import { Movie, TVShow } from "@prisma/client"
 
-interface MovieListProps {
+interface ScrollListProps {
     title: string
     url: string
     isMovie: boolean
 }
 
-const ScrollList = ({title, url, isMovie}: MovieListProps) => {
+const ScrollList = ({title, url, isMovie}: ScrollListProps) => {
     const { data }: { data: Movie[] | TVShow[] } = useFetch(url)
     
     if (!data || !data.length) {

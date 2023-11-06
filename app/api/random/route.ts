@@ -8,15 +8,24 @@ export async function GET(){
     if(!session) {
         return new Response("Unauthorized", {status: 401})
     }
+    const movieOrTV = (Math.floor(Math.random() * 2))
     
     try {
-        const movieCount = await prismadb.movie.count()
-        const randomMovie = Math.floor(Math.random() * movieCount);
-        const movie = await prismadb.movie.findMany({
-            take: 1,
-            skip: randomMovie
-        })
-        return new Response(JSON.stringify(movie[0]))
+        const count = movieOrTV === 0 ? await prismadb.tVShow.count() : await prismadb.movie.count()
+        const randomItem = Math.floor(Math.random() * count);
+        let item;
+        if(movieOrTV === 0) {
+            item = await prismadb.tVShow.findMany({
+                take: 1,
+                skip: randomItem
+            })
+        } else {
+            item = await prismadb.movie.findMany({
+                take: 1,
+                skip: randomItem
+            })
+        }
+        return new Response(JSON.stringify(item[0]))
 
     } catch (error) {
         return new Response("Error" + error, {status: 500})
