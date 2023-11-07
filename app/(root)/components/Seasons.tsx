@@ -37,11 +37,11 @@ const Seasons = ({tv}: SeasonsProps) => {
                             <div tabIndex={episode.episode_number} key={episode.id_episode} className="p-2 md:w-1/2 lg:w-1/3 xl:w-1/4">
                                 <div className="flex space-x-2">
                                     <div className="w-36 overflow-hidden rounded-md">
-                                        <img className={`${episode.videoUrl ? 'brightness-100': 'brightness-50'} aspect-[16/9] h-full object-cover` } src={episode?.still_path!} alt="" />
+                                        <img className={`${episode.videoUrl ? 'brightness-100': 'brightness-50'} aspect-[16/9] h-full object-cover` } src={episode?.still_path?.includes('null') ? tv?.backdropUrl! : episode?.still_path! } alt="" />
                                     </div>
                                     <div className="flex flex-col justify-between">
                                         <p>{episode.episode_number}- {episode.name}</p>
-                                        <p className="text-zinc-400 text-xs">{episode.runtime} min.</p>
+                                        {episode.runtime && <p className="text-zinc-400 text-xs">{episode.runtime} min.</p>}
                                         {episode.videoUrl && <PlayButton action={() => {
                                             setEpisode(tv?.seasons[0].season_number === 0 ? tv?.seasons[+season.season_number].episodes[+episode.episode_number - 1] : tv?.seasons[+season.season_number - 1].episodes[+episode.episode_number - 1])    
                                             setShowPlayer(true)

@@ -22,7 +22,7 @@ const MoviePage = async ({params}:{params: {id: string}}) => {
 
 
   return (
-    <div>
+    <div className="mt-12">
         <BillboardVideo colors={[colorA, colorB]} media={movie as Movie}/>
         <div className="p-4">
             <p>Película</p>

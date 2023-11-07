@@ -28,7 +28,7 @@ const TVShowPage = async ({params}:{params: {id: string}}) => {
     const colorB = sortedArray[1]?.hex!
 
   return (
-    <div>
+    <div className="mt-12">
         <BillboardVideo media={tv as TVShow} colors={[colorA, colorB]}/>
         <div className="p-4 md:p-8">
             <p>Serie</p>
