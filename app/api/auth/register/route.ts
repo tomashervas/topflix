@@ -2,9 +2,17 @@ import bcrypt from "bcrypt";
 
 import prismadb from '@/lib/prismadb'
 import { NextResponse } from "next/server";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 
 
 export async function POST(req: Request) {
+
+    const session = await getServerSession(authOptions);
+    if(!session) {
+        return new Response("Unauthorized", {status: 401})
+    }
+
     if (req.method !== 'POST') return new NextResponse("Must be POST method", {status: 400})
 
     try {

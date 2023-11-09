@@ -3,6 +3,7 @@
 import useFetch from "@/hooks/useFetch"
 import Card from "./Card"
 import { Movie, TVShow } from "@prisma/client"
+import { useEffect } from "react"
 
 interface MovieListProps {
     isMovie: boolean
@@ -10,8 +11,15 @@ interface MovieListProps {
 
 const FavoritesList = ({  isMovie}: MovieListProps) => {
 
+    //get profile from local storage
+    if(typeof localStorage === 'undefined') {
+        return null
+    }
+    const profile = JSON.parse(localStorage.getItem('profile')!)
+    //console.log(profile)
 
-    const {data}: {data: Movie[] | TVShow[]} = useFetch(isMovie ? '/api/favorites' : '/api/favoritestv')
+
+    const {data}: {data: Movie[] | TVShow[]} = useFetch(isMovie ? `/api/favorites?profile=${profile.name}` : `/api/favoritestv?profile=${profile.name}`)
     
     if (!data || !data.length) {
         return null

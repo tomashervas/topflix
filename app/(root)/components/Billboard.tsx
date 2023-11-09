@@ -46,7 +46,7 @@ const Billboard  = ({media, colors}: BillboardProps) => {
         {media?.trailer ?
         <iframe className="mt-12 w-full aspect-[16/9] h-[40vh] md:h-[56.25vw] object-cover overflow-hidden brightness-[60%]" src={media?.trailer}></iframe> :
         <div className={'p-6 md:p-0'} style={gradientStyle}>
-          <div className="mt-12 w-full aspect-[16/9] h-[50vh] md:h-[56.25vw] object-cover overflow-hidden">
+          <div className="mt-12 w-full aspect-[16/9] h-[50vh] md:h-[56.25vw] object-cover overflow-hidden rounded-lg">
             <img src={poster} alt="" />
           </div>
         </div> }

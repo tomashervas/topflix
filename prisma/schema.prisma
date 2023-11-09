@@ -19,10 +19,18 @@ model User {
   hashedPassword String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  favoriteIds String[] @db.ObjectId
-  favoriteTVIds String[] @db.ObjectId
   sessions Session[]
   accounts Account[]
+  profiles Profile[]
+}
+
+type Profile {
+  name String
+  image String
+  isKid Boolean
+  limitedAge Int?
+  favoriteIds String[] @db.ObjectId
+  favoriteTVIds String[] @db.ObjectId
 }
 
 model Account {

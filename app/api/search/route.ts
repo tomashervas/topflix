@@ -12,7 +12,6 @@ export async function GET(request: Request){
 
     const { searchParams } = new URL(request.url)
     const query = searchParams.get('query')
-    console.log('query' + query)
     if(!query) {
         return new Response("Invalid request", {status: 400})
     }

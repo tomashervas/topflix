@@ -2,11 +2,14 @@ import { authOptions } from "@/lib/auth";
 import { getServerSession } from "next-auth";
 import prismadb from "@/lib/prismadb";
 
-export async function GET(req: Request) {
+export async function GET(request: Request) {
     const session = await getServerSession(authOptions);
     if(!session) {
         return new Response("Unauthorized", {status: 401})
     }
+
+    const { searchParams } = new URL(request.url)
+    const profile = searchParams.get('profile')
 
     try {
         const user = await prismadb.user.findUnique({
@@ -17,7 +20,7 @@ export async function GET(req: Request) {
         const movies = await prismadb.tVShow.findMany({
             where: {
                 id: {
-                    in: user!.favoriteTVIds
+                    in: user!.profiles.find(p=>p.name===profile)?.favoriteTVIds
                 }
             }
         })

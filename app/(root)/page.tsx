@@ -1,12 +1,8 @@
 import { authOptions } from '@/lib/auth'
 import { getServerSession } from 'next-auth'
-import Image from 'next/image'
 import { redirect } from 'next/navigation'
-import SignOutBtn from './components/SignOutBtn'
-import Navbar from './components/Navbar'
 import Billboard from './components/Billboard'
 import ScrollList from './components/ScrollList'
-import FavoritesList from './components/FavoritesList'
 import Favorites from './components/Favorites'
 import Vibrant from 'node-vibrant'
 import { TVShow, Movie } from '@prisma/client'
@@ -54,7 +50,6 @@ export default async function Home() {
       <Favorites/>
       <ScrollList title='Destacado: películas' url='/api/movies' isMovie/>
       <ScrollList title='Destacado: series' url='/api/tvshows' isMovie={false}/>
-
     </>
   )
 }
