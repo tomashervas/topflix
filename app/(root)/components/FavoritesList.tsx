@@ -22,7 +22,11 @@ const FavoritesList = ({  isMovie}: MovieListProps) => {
     const {data}: {data: Movie[] | TVShow[]} = useFetch(isMovie ? `/api/favorites?profile=${profile.name}` : `/api/favoritestv?profile=${profile.name}`)
     
     if (!data || !data.length) {
-        return null
+        return (
+            <div>
+                <p className="p-4">No hay favoritos</p>
+            </div>
+        )
     }
 
     

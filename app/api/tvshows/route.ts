@@ -5,14 +5,23 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 
 
-export async function GET(){
+export async function GET(request: Request) {
     const session = await getServerSession(authOptions);
     if(!session) {
         return new Response("Unauthorized", {status: 401})
     }
+
+    const { searchParams } = new URL(request.url)
+    const limitedAge = (!searchParams.get('limitedAge') || searchParams.get('limitedAge') === 'null') ? 20 : Number(searchParams.get('limitedAge'))
+
     
     try {
         const tv = await prismadb.tVShow.findMany({
+            where: {
+                content_rating: {
+                    lte: limitedAge
+                }
+            },
             orderBy: {
                 createdAt: 'desc'
             },

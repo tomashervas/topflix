@@ -30,7 +30,7 @@ const Search = () => {
 
   return (
       <div className='flex justify-end items-center relative'>
-          {showInput && <input type="text" placeholder='Buscar...' className='w-16 md:w-48 text-zinc-400 bg-transparent focus:outline-none' onChange={handleSearch}/>}
+          {showInput && <input type="text" placeholder='Buscar...' className='w-28 md:w-48 text-zinc-400 bg-transparent focus:outline-none' onChange={handleSearch}/>}
           <button onClick={()=>{
             setShowInput(!showInput)
             setQuery(null)

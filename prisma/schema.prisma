@@ -86,7 +86,7 @@ model Movie {
   release_date String?
   vote_average Float?
   duration Int?
-  content_rating String?
+  content_rating Int?
   budget Int?
   revenue Int?
   tagline String?
@@ -115,7 +115,7 @@ model TVShow {
   last_air_date String?
   vote_average Float?
   duration Int?
-  content_rating String?
+  content_rating Int?
   tagline String?
   trailer String?
   seasons Season[]

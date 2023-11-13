@@ -9,7 +9,11 @@ export async function GET(request: Request) {
     }
 
     const { searchParams } = new URL(request.url)
-    const profile = searchParams.get('profile')
+    const profile:string | null = searchParams.get('profile')
+
+    if(!profile) {
+        return new Response("Invalid request", {status: 400})
+    }
 
     try {
         const user = await prismadb.user.findUnique({
@@ -17,7 +21,7 @@ export async function GET(request: Request) {
                 email: session.user!.email!
             }
         })
-        const movies = await prismadb.tVShow.findMany({
+        const tvs = await prismadb.tVShow.findMany({
             where: {
                 id: {
                     in: user!.profiles.find(p=>p.name===profile)?.favoriteTVIds
@@ -25,7 +29,7 @@ export async function GET(request: Request) {
             }
         })
 
-        return new Response(JSON.stringify(movies))
+        return new Response(JSON.stringify(tvs))
         
     } catch (error) {
         console.log(error)

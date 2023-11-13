@@ -11,7 +11,12 @@ interface CardProps {
 
 const Card = ({item, isMovie}: CardProps) => {
 
-  const {data: favorites, mutate}: {data: Movie[] | TVShow[], mutate: Function} = useFetch(isMovie ? '/api/favorites' : '/api/favoritestv')
+  if(typeof localStorage === 'undefined') {
+    return null
+}
+const profile = JSON.parse(localStorage.getItem('profile')!)
+
+  const {data: favorites, mutate}: {data: Movie[] | TVShow[], mutate: Function} = useFetch(isMovie ? `/api/favorites?profile=${profile.name}` : `/api/favoritestv?profile=${profile.name}`)
   const [isFavourite, setIsFavourite] = useState(false)
   const router = useRouter()
   
@@ -30,14 +35,14 @@ const Card = ({item, isMovie}: CardProps) => {
     if(isFavourite){
       console.log('ya no es favorito')
       setIsFavourite(false)
-      const res = await axios.delete(isMovie ? `/api/favorites/${item.id}` : `/api/favoritestv/${item.id}`)
+      const res = await axios.delete(isMovie ? `/api/favorites/${item.id}?profile=${profile.name}` : `/api/favoritestv/${item.id}?profile=${profile.name}`)
       console.log(res.data)
 
     }
     else {
       console.log('es favorito')
       setIsFavourite(true)
-      const res = await axios.post(isMovie ? `/api/favorites/${item.id}` : `/api/favoritestv/${item.id}`)
+      const res = await axios.post(isMovie ? `/api/favorites/${item.id}?profile=${profile.name}` : `/api/favoritestv/${item.id}?profile=${profile.name}`)
       console.log(res.data)
     }
     mutate()
