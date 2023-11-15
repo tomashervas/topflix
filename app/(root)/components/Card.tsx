@@ -1,3 +1,5 @@
+"use client"
+
 import useFetch from "@/hooks/useFetch"
 import { Movie, TVShow } from "@prisma/client"
 import axios from "axios"

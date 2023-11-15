@@ -1,21 +1,21 @@
 "use client"
 
-import { Movie } from "@/models/movie"
-import { TVShow } from "@prisma/client"
+import { Movie, TVShow } from "@prisma/client"
 import { useEffect, useState } from "react"
 
 interface BillboardVideoProps {
     media: Movie | TVShow
     colors: string[]
+    limitedAge: number
 }
 
 
-const BillboardVideo = ({media, colors}: BillboardVideoProps) => {
+const BillboardVideo = ({media, colors, limitedAge }: BillboardVideoProps) => {
 
     const colorA = colors[0]
     const colorB = colors[1]
     const gradientStyle = {
-      backgroundImage: `linear-gradient(${colorA}, ${colorB}, #18181b)`,
+      backgroundImage: `linear-gradient(${colorA}, ${colorB}, ${limitedAge < 12 ? '#1d4ed8' : '#18181b'})`,
     };
 
     const [mounted, setMounted] = useState(false)
@@ -40,8 +40,8 @@ const BillboardVideo = ({media, colors}: BillboardVideoProps) => {
   return (
     <div>
         {media?.trailer ?
-        <iframe className="mt-12 w-full aspect-[16/9] h-[40vh] md:h-[56.25vw] object-cover overflow-hidden" src={media?.trailer}></iframe> :
-        <div className={'p-6 md:p-0'} style={gradientStyle}>
+        <iframe className="mt-12 mb-4 w-full aspect-[16/9] h-[40vh] md:h-[56.25vw] object-cover overflow-hidden" src={media?.trailer}></iframe> :
+        <div className={'p-6 mt-12 md:p-0'} style={gradientStyle}>
           <div className="w-full aspect-[16/9] h-[50vh] md:h-[56.25vw] object-cover overflow-hidden rounded-lg">
             <img src={poster} alt=""/>
           </div>

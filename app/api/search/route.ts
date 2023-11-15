@@ -3,6 +3,7 @@ import prismadb from '@/lib/prismadb'
 import { Movie, TVShow } from '@prisma/client'
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
+import { cookies } from 'next/headers';
 
 export async function GET(request: Request){
     const session = await getServerSession(authOptions);
@@ -12,6 +13,11 @@ export async function GET(request: Request){
 
     const { searchParams } = new URL(request.url)
     const query = searchParams.get('query')
+
+    const cookieStore = cookies()
+    const limit = cookieStore.get('limitedAge')
+    const limitedAge = (!limit || limit.value === 'null') ? 20 : Number(limit.value)
+
     if(!query) {
         return new Response("Invalid request", {status: 400})
     }
@@ -19,6 +25,13 @@ export async function GET(request: Request){
     try {
         const tv = await prismadb.tVShow.findMany({
             where: {
+                AND: [
+                    {
+                        content_rating: {
+                            lte: limitedAge
+                        }
+                    }
+                ],
                 name: {
                     contains: query!,
                     mode: 'insensitive'
@@ -33,6 +46,13 @@ export async function GET(request: Request){
 
         const movies = await prismadb.movie.findMany({
             where: {
+                AND: [
+                    {
+                        content_rating: {
+                            lte: limitedAge
+                        }
+                    }
+                ],
                 name: {
                     contains: query!,
                     mode: 'insensitive'

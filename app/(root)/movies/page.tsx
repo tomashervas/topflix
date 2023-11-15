@@ -3,9 +3,39 @@ import BillboardVideo from "../components/BillboardVideo";
 import ScrollList from "../components/ScrollList"
 import ScrollListServer from "../components/ScrollListServer"
 import prismadb from "@/lib/prismadb";
-import { Movie } from "@/models/movie";
+import { Movie } from "@prisma/client";
+import { cookies } from "next/headers";
+import All from "../components/All";
+
+const getByGenre = async (genres: string[], limited: number) => {
+  return await prismadb.movie.findMany({
+    where:{
+      AND: [
+        {
+          content_rating: {
+            lte: limited
+          }
+        },
+        {
+          genres: {
+            hasSome: genres
+          }
+        }
+      ]
+    },
+    orderBy: {
+      release_date: 'desc'
+    },
+    take: 20
+  })
+}
 
 const MoviesPage = async () => {
+
+  const cookieStore = cookies()
+  const limit = cookieStore.get('limitedAge')
+
+  const limitedAge = (!limit || limit.value === 'null') ? 20 : Number( limit.value )
 
   const today = new Date();
 
@@ -14,18 +44,37 @@ const MoviesPage = async () => {
 
   const count =  await prismadb.movie.count({
     where: {
-      createdAt: {
-        gte: last2weeks
-      }
+      AND: [
+        {
+          content_rating: {
+            lte: limitedAge
+          }
+        },
+        {
+          createdAt: {
+            gte: last2weeks
+          }
+        }
+      ]
+      
     }
   })
   const randomMovie = Math.floor(Math.random() * count | 0)
 
   let movie = await prismadb.movie.findMany({
     where: {
-      createdAt: {
-        gte: last2weeks
-      }
+      AND: [
+        {
+          content_rating: {
+            lte: limitedAge
+          }
+        },
+        {
+          createdAt: {
+            gte: last2weeks
+          }
+        }
+      ]
     },
     take: 1,
     skip: randomMovie
@@ -33,6 +82,11 @@ const MoviesPage = async () => {
 
   if (movie.length === 0) {
     movie = await prismadb.movie.findMany({
+      where: {
+        content_rating: {
+          lte: limitedAge
+        }
+      },
       orderBy: {
         createdAt: 'desc'
       },
@@ -43,9 +97,18 @@ const MoviesPage = async () => {
 
   const clasicos = await prismadb.movie.findMany({
     where: {
-      release_date: {
-        lt: '1990-01-01'
-      }
+      AND: [
+        {
+          content_rating: {
+            lte: limitedAge
+          }
+        },
+        {
+          release_date: {
+            lt: '1990-01-01'
+          }
+        }
+      ]
     },
     orderBy: {
       title: 'asc'
@@ -55,14 +118,23 @@ const MoviesPage = async () => {
 
   const noventas = await prismadb.movie.findMany({
     where: {
-      release_date: {
-        lt: '2010-01-01'
-      },
-      AND: {
-        release_date: {
-          gt: '1990-01-01'
+      AND: [
+        {
+          content_rating: {
+            lte: limitedAge
+          }
+        },
+        {
+          release_date: {
+            gt: '1990-01-01'
+          }
+        },
+        {
+          release_date: {
+            lt: '2010-01-01'
+          }
         }
-      }
+      ]
     },
     orderBy: {
       title: 'asc'
@@ -70,53 +142,13 @@ const MoviesPage = async () => {
     take: 20
   })
 
-  const thrillers = await prismadb.movie.findMany({
-    where:{
-      genres: {
-        hasSome: ['Crimen','Misterio', 'Suspense']
-      }
-    },
-    orderBy: {
-      release_date: 'desc'
-    },
-    take: 20
-  })
+  const thrillers = await getByGenre(['Crimen','Misterio', 'Suspense'], limitedAge)
 
-  const comedia = await prismadb.movie.findMany({
-    where:{
-      genres: {
-        hasSome: ['Comedia']
-      }
-    },
-    orderBy: {
-      release_date: 'desc'
-    },
-    take: 20
-  })
+  const comedia = await getByGenre(['Comedia'], limitedAge)
 
-  const drama = await prismadb.movie.findMany({
-    where:{
-      genres: {
-        hasSome: ['Drama']
-      }
-    },
-    orderBy: {
-      release_date: 'desc'
-    },
-    take: 20
-  })
+  const drama = await getByGenre(['Drama'], limitedAge)
 
-  const accion = await prismadb.movie.findMany({
-    where:{
-      genres: {
-        hasSome: ['Acción', 'Aventura']
-      }
-    },
-    orderBy: {
-      release_date: 'desc'
-    },
-    take: 20
-  })
+  const accion = await getByGenre(['Acción', 'Aventura'], limitedAge)
 
   const romance = await prismadb.movie.findMany({
     where:{
@@ -130,41 +162,11 @@ const MoviesPage = async () => {
     take: 20
   })
 
-  const ficcion = await prismadb.movie.findMany({
-    where:{
-      genres: {
-        hasSome: ['Ciencia ficción']
-      }
-    },
-    orderBy: {
-      release_date: 'desc'
-    },
-    take: 20
-  })
+  const ficcion = await getByGenre(['Ciencia ficción'], limitedAge)
 
-  const familiar = await prismadb.movie.findMany({
-    where:{
-      genres: {
-        hasSome: ['Familia']
-      }
-    },
-    orderBy: {
-      release_date: 'desc'
-    },
-    take: 20
-  })
+  const familiar = await getByGenre(['Familia'], limitedAge)
 
-  const terror = await prismadb.movie.findMany({
-    where:{
-      genres: {
-        hasSome: ['Terror']
-      }
-    },
-    orderBy: {
-      release_date: 'desc'
-    },
-    take: 20
-  })
+  const terror = await getByGenre(['Terror'], limitedAge)
   
   const palette = await Vibrant.from(movie[0]?.thumbnailUrl!).getPalette()
     const arrayPalette =  Object.values(palette)
@@ -175,9 +177,9 @@ const MoviesPage = async () => {
 
 
   return (
-    <div className="mt-12">
-        <BillboardVideo colors={[colorA, colorB]}  media={movie[0] as Movie}/>
-        <ScrollList title='Añadido recientemente' url='/api/movies' isMovie/>
+    <div className={limitedAge < 12 ? 'bg-blue-700': 'bg-zinc-900'}>
+        <BillboardVideo colors={[colorA, colorB]}  media={movie[0] as Movie} limitedAge={limitedAge}/>
+        <ScrollList title='Añadido recientemente' url={'/api/movies?limitedAge=' + limitedAge} isMovie/>
         {thrillers.length > 0 && <ScrollListServer title='El mejor suspense' data={thrillers} isMovie />}
         {ficcion.length > 0 && <ScrollListServer title='Descubre nuevos horizontes' data={ficcion} isMovie />}
         {drama.length > 0 && <ScrollListServer title='Un poco de drama' data={drama} isMovie />}
@@ -188,6 +190,7 @@ const MoviesPage = async () => {
         {terror.length > 0 && <ScrollListServer title='Para pasarlo de miedo' data={terror} isMovie />}
         {noventas.length > 0 && <ScrollListServer title='Películas de los 90' data={noventas} isMovie />}
         {clasicos.length > 0 && <ScrollListServer title='Grandes clásicos' data={clasicos} isMovie />}
+        <All isMovie/>
 
     </div>
   )

@@ -12,9 +12,10 @@ import { GoInfo } from "react-icons/go"
 interface BillboardProps {
   media: Movie | TVShow
   colors: string[]
+  limitedAge: number
 }
 
-const Billboard = ({ media, colors }: BillboardProps) => {
+const Billboard = ({ media, colors, limitedAge }: BillboardProps) => {
 
   const [mounted, setMounted] = useState(false)
   const [poster, setPoster] = useState('')
@@ -23,13 +24,15 @@ const Billboard = ({ media, colors }: BillboardProps) => {
   const colorA = colors[0]
   const colorB = colors[1]
   const gradientStyle = {
-    backgroundImage: `linear-gradient(${colorA}, ${colorB}, #18181b)`,
+    backgroundImage: `linear-gradient(${colorA}, ${colorB}, ${limitedAge < 12 ? '#1d4ed8' : '#18181b'})`,
   };
+
+  
 
   useEffect(() => {
     if (media) {
       setMounted(true)
-      
+
       if (screen.width > 768) {
         setPoster(media?.backdropUrl!)
       } else {
