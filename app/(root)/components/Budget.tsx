@@ -5,7 +5,7 @@ import { Movie } from "@/models/movie"
 import { useCallback, useEffect, useState } from "react"
 
 interface BudgetProps {
-  rating: string | null | undefined
+  rating: number
 }
 const Budget = ({rating} : BudgetProps) => {
 

@@ -6,6 +6,7 @@ import prismadb from "@/lib/prismadb";
 import { Movie } from "@prisma/client";
 import { cookies } from "next/headers";
 import All from "../components/All";
+import { getColorsImg } from "@/lib/utils";
 
 const getByGenre = async (genres: string[], limited: number) => {
   return await prismadb.movie.findMany({
@@ -168,11 +169,7 @@ const MoviesPage = async () => {
 
   const terror = await getByGenre(['Terror'], limitedAge)
   
-  const palette = await Vibrant.from(movie[0]?.thumbnailUrl!).getPalette()
-    const arrayPalette =  Object.values(palette)
-    const sortedArray = arrayPalette.sort((a, b) => b!.population - a!.population)
-    const colorA = sortedArray[0]?.hex!
-    const colorB = sortedArray[1]?.hex!
+  const [colorA, colorB] = await getColorsImg(Vibrant, movie[0]?.thumbnailUrl!, limitedAge)
   
 
 

@@ -8,6 +8,7 @@ import Vibrant from 'node-vibrant'
 import { TVShow, Movie } from '@prisma/client'
 import prismadb from "@/lib/prismadb";
 import { cookies } from 'next/headers'
+import { getColorsImg } from '@/lib/utils'
 
 
 export default async function Home(/* {searchParams}: {searchParams: { limitedAge: string | null }} */) {
@@ -29,13 +30,10 @@ export default async function Home(/* {searchParams}: {searchParams: { limitedAg
   console.log('limited cookie: ' + limitedAge, typeof limitedAge)
 
   const movieOrTV = (Math.floor(Math.random() * 2))
-  console.log('movieOrTV: ' + movieOrTV)
 
   const count = movieOrTV === 0 ? await prismadb.tVShow.count({where: {content_rating: {lte: limitedAge}}}) 
     : await prismadb.movie.count({where: {content_rating: {lte: limitedAge}}})
-  console.log('count: ' + count)
   const randomItem = Math.floor(Math.random() * count);
-  console.log('randomItem: ' + randomItem)
 
   let item: Movie[] | TVShow[] = []
   try {
@@ -56,26 +54,27 @@ export default async function Home(/* {searchParams}: {searchParams: { limitedAg
       take: 1,
       skip: randomItem
     })
-    console.log('item: ' + item)
   } catch (error) {
     console.log("error consulta: " + error)
     
   }
   
 
-  let colorA = limitedAge < 12 ? '#1d4ed8' : '#18181b'
-  let colorB = limitedAge < 12 ? '#1d4ed8' : '#18181b'
+  // let colorA = limitedAge < 12 ? '#1d4ed8' : '#18181b'
+  // let colorB = limitedAge < 12 ? '#1d4ed8' : '#18181b'
 
-  try {
-    const palette = await Vibrant.from(item[0]?.thumbnailUrl!).getPalette()
-    const arrayPalette = Object.values(palette)
-    const sortedArray = arrayPalette.sort((a, b) => b!.population - a!.population)
-    colorA = sortedArray[0]?.hex!
-    colorB = sortedArray[1]?.hex!
+  // try {
+  //   const palette = await Vibrant.from(item[0]?.thumbnailUrl!).getPalette()
+  //   const arrayPalette = Object.values(palette)
+  //   const sortedArray = arrayPalette.sort((a, b) => b!.population - a!.population)
+  //   colorA = sortedArray[0]?.hex!
+  //   colorB = sortedArray[1]?.hex!
 
-  } catch (error) {
-    console.log(error)
-  }
+  // } catch (error) {
+  //   console.log(error)
+  // }
+
+  const [colorA, colorB] = await getColorsImg(Vibrant, item[0]?.thumbnailUrl!, limitedAge)
 
   console.log('item: ' + item[0]?.name)
 

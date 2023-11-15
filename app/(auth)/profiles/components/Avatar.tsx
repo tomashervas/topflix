@@ -1,5 +1,6 @@
 "use client"
 
+import { saveProfileLocal } from "@/lib/utils"
 import { useRouter } from "next/navigation"
 
 interface AvatarProps {
@@ -12,17 +13,10 @@ const Avatar = ({ name, imgUrl, limitedAge }: AvatarProps) => {
 
   const router = useRouter()
 
-  const saveProfileLocalStorage = () => {
-    console.log('edad: ' + limitedAge)
-    const expirationDate = new Date();
-    expirationDate.setDate(expirationDate.getDate() + 90);
-    localStorage.setItem('profile', JSON.stringify({name, imgUrl, limitedAge}))
-    document.cookie = `limitedAge=${limitedAge}; path=/; expires=${expirationDate.toUTCString()}`
-    router.push(process.env.NEXT_PUBLIC_DOMAIN_URL + '/')
-  }
+
 
   return (
-    <div onClick={saveProfileLocalStorage} className="group flex flex-col justify-center items-center cursor-pointer">
+    <div onClick={()=>saveProfileLocal(router, name, imgUrl, limitedAge!)} className="group flex flex-col justify-center items-center cursor-pointer">
                 <div className="w-32 h-32 transition rounded-xl overflow-hidden border-2 border-transparent group-hover:border-white">
                     <img src={imgUrl} alt="" />
                 </div>

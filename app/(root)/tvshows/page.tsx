@@ -1,12 +1,12 @@
+import { cookies } from "next/headers";
+import { getColorsImg } from "@/lib/utils";
 import { TVShow } from "@prisma/client";
+import All from "../components/All";
 import BillboardVideo from "../components/BillboardVideo";
+import prismadb from "@/lib/prismadb";
 import ScrollList from "../components/ScrollList"
 import ScrollListServer from "../components/ScrollListServer"
-import prismadb from "@/lib/prismadb";
-import { Movie } from "@/models/movie";
 import Vibrant from "node-vibrant";
-import { cookies } from "next/headers";
-import All from "../components/All";
 
 const getByGenre = async (genres: string[], limited: number) => {
   return await prismadb.tVShow.findMany({
@@ -155,11 +155,7 @@ const TVsPage = async () => {
    
   const familiar = await getByGenre(['Familia', 'Kids'], limitedAge)
 
-    const palette = await Vibrant.from(tv[0]?.thumbnailUrl!).getPalette()
-    const arrayPalette =  Object.values(palette)
-    const sortedArray = arrayPalette.sort((a, b) => b!.population - a!.population)
-    const colorA = sortedArray[0]?.hex!
-    const colorB = sortedArray[1]?.hex!
+  const [colorA, colorB] = await getColorsImg(Vibrant, tv[0]?.thumbnailUrl!, limitedAge)
     // console.log(palette.DarkMuted?.hex)
 
   

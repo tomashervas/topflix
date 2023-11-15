@@ -1,10 +1,9 @@
 "use client"
 
-import { Movie } from "@/models/movie"
 import { useEffect, useState } from "react"
 import ButtonSolid from "./ButtonSolid"
 import CloseBtn from "./CloseBtn"
-import { Episode, TVShow } from "@prisma/client"
+import { Episode, Movie, TVShow } from "@prisma/client"
 import Player from "./Player"
 
 interface MoviePlayerProps {

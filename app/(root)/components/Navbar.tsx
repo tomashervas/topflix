@@ -1,7 +1,5 @@
 import { BsChevronDown } from "react-icons/bs"
-import NavbarItem from "./NavbarItem"
 import ProfileMenu from "./ProfileMenu"
-import SignOutBtn from "./SignOutBtn"
 import NavMenu from "./NavMenu"
 import Link from "next/link"
 import Search from "./Search"
@@ -32,7 +30,7 @@ const Navbar = async () => {
 
   return (
     <nav className="w-full top-0 fixed z-20">
-         <div className={`flex items-center justify-between px-6 py-2 ${limitedAge < 12 ? 'bg-blue-950 bg-opacity-80' : 'bg-zinc-900 bg-opacity-70'} `}>
+         <div className={`flex items-center justify-between px-6 py-2 ${limitedAge < 12 ? 'bg-blue-950 bg-opacity-80' : 'bg-zinc-950 bg-opacity-70'} `}>
             <div className="flex items-center">
                 <Link href="/">
                   <img className="h-8 md:h-10 cursor-pointer"  src="/images/logoTFX.png" alt="logo TFX" />
