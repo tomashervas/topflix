@@ -1,9 +1,10 @@
 "use server"
 
 import prismadb from "@/lib/prismadb";
+import { Movie, TVShow } from "@prisma/client";
 
 
-export const getAllMovies = async (limit: number, page: number = 1, take: number = 20) => {
+export const getAllMovies = async (limit: number, page: number = 1, take: number = 4) => {
     const movies = await prismadb.movie.findMany({
         where: {
             content_rating: {
@@ -16,10 +17,10 @@ export const getAllMovies = async (limit: number, page: number = 1, take: number
         skip: (page - 1) * take,
         take
     })
-    return movies
+    return movies as Movie[]
 }
 
-export const getAllTVs = async (limit: number, page: number = 1, take: number = 20) => {
+export const getAllTVs = async (limit: number, page: number = 1, take: number = 3) => {
     const tvs = await prismadb.tVShow.findMany({
         where: {
             content_rating: {
@@ -32,5 +33,5 @@ export const getAllTVs = async (limit: number, page: number = 1, take: number = 
         skip: (page - 1) * take,
         take
     })
-    return tvs
+    return tvs as TVShow[]
 }

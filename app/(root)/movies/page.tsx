@@ -7,6 +7,7 @@ import { Movie } from "@prisma/client";
 import { cookies } from "next/headers";
 import All from "../components/All";
 import { getColorsImg } from "@/lib/utils";
+import Loader from "../components/Loader";
 
 const getByGenre = async (genres: string[], limited: number) => {
   return await prismadb.movie.findMany({
