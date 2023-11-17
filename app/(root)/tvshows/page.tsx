@@ -31,8 +31,8 @@ const getByGenre = async (genres: string[], limited: number) => {
   })
 }
 
-const TVsPage = async () => {
-
+const TVsPage = async ({searchParams}: {searchParams: { sort_by_name: string | null }}) => {
+  console.log('desde tvs ' + searchParams.sort_by_name)
   const cookieStore = cookies()
   const limit = cookieStore.get('limitedAge')
 
@@ -173,7 +173,7 @@ const TVsPage = async () => {
         {familiar.length > 0 && <ScrollListServer title='Para toda la familia' data={familiar} isMovie={false} />}
         {noventas.length > 0 && <ScrollListServer title='Películas de los 90' data={noventas} isMovie={false} />}
         {clasicos.length > 0 && <ScrollListServer title='Grandes clásicos' data={clasicos} isMovie={false} />}
-        <All isMovie={false}/>
+        <All sort={searchParams.sort_by_name} isMovie={false}/>
 
     </div>
   )

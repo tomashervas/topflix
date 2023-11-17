@@ -20,7 +20,7 @@ const ScrollList = ({title, url, isMovie}: ScrollListProps) => {
   
     
   return (
-    <div className="space-y-4 md:p-8 px-4 pb-4 overflow-hidden ">
+    <div className="space-y-4 md:p-6 px-4 pb-4 overflow-hidden ">
         <h3 className="text-xl md:text-2xl font-semibold">{title}</h3>
         <div className="flex flex-nowrap overflow-auto space-x-3 md:space-x-5 md:scrollbar-thin scrollbar-thumb-zinc-800 scrollbar-track-transparent md:pb-4">
             {data.map((item) => (

@@ -10,7 +10,7 @@ const AllItems = ({ items, isMovie }: AllItemsProps) => {
     return (
         <>
             {items ? items.map((item) => (
-                <Card key={item.id} item={item} isMovie={isMovie} />
+                <Card key={item.id} item={item} isMovie={isMovie} grid/>
             ))
                 : <div className="text-xl font-bold">No Hay items </div>
             }

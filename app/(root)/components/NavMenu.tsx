@@ -30,7 +30,6 @@ const NavMenu = () => {
             <NavbarItem setVisible={setVisible} link="/">Home</NavbarItem>
             <NavbarItem setVisible={setVisible} link="/tvshows">Series</NavbarItem>
             <NavbarItem setVisible={setVisible} link="/movies">Películas</NavbarItem>
-            <NavbarItem setVisible={setVisible} link="/mylist">Mi lista</NavbarItem>
         </ul>}
         <div className="flex items-center ml-4 space-x-2 md:hidden cursor-pointer">
             <button onClick={() => setVisible(!visible)}>{handleName(pathname)}</button>

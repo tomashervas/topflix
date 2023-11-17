@@ -9,10 +9,11 @@ import AllItems from "./AllItems";
 
 interface LoadMoreItemsProps {
   isMovie: boolean,
-  limitedAge: number
+  limitedAge: number,
+  sort: boolean
 }
 
-const LoadMoreItems = ({ isMovie, limitedAge }: LoadMoreItemsProps) => {
+const LoadMoreItems = ({ isMovie, limitedAge, sort }: LoadMoreItemsProps) => {
 
   const [items, setItems] = useState<Movie[] | TVShow[]>([])
   const [page, setPage] = useState(1)
@@ -22,9 +23,9 @@ const LoadMoreItems = ({ isMovie, limitedAge }: LoadMoreItemsProps) => {
   const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
   const loadMore = async () => {
-    await delay(1000);
+    // await delay(1000);
     const nextPage = page + 1
-    const newItems = isMovie ? await getAllMovies(limitedAge, nextPage) ?? [] : await getAllTVs(limitedAge, nextPage) ?? []
+    const newItems = isMovie ? await getAllMovies(limitedAge, nextPage, undefined, sort) ?? [] : await getAllTVs(limitedAge, nextPage, undefined, sort) ?? []
     if (newItems.length === 0) {
       setShow(false)
       return
