@@ -30,10 +30,10 @@ export const getAllMovies = async (limit: number, page: number = 1, take: number
 
 export const getAllTVs = async (limit: number, page: number = 1, take: number = 3, alphabetic: boolean = false) => {
 
-    let orderByField: 'nameShow' | 'first_air_date' = 'first_air_date';
+    let orderByField: 'name' | 'first_air_date' = 'first_air_date';
     let orderByDirection: 'desc' | 'asc' = 'desc';
     if (alphabetic) {
-        orderByField = 'nameShow';
+        orderByField = 'name';
         orderByDirection = 'asc';
     }
 

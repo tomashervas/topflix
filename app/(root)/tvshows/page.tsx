@@ -31,6 +31,8 @@ const getByGenre = async (genres: string[], limited: number) => {
   })
 }
 
+export const fetchCache = 'only-no-store'
+
 const TVsPage = async ({searchParams}: {searchParams: { sort_by_name: string | null }}) => {
   console.log('desde tvs ' + searchParams.sort_by_name)
   const cookieStore = cookies()

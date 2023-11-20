@@ -25,6 +25,7 @@ const LoadMoreItems = ({ isMovie, limitedAge, sort }: LoadMoreItemsProps) => {
   const loadMore = async () => {
     // await delay(1000);
     const nextPage = page + 1
+    console.log('next page: ' + nextPage)
     const newItems = isMovie ? await getAllMovies(limitedAge, nextPage, undefined, sort) ?? [] : await getAllTVs(limitedAge, nextPage, undefined, sort) ?? []
     if (newItems.length === 0) {
       setShow(false)
@@ -37,7 +38,6 @@ const LoadMoreItems = ({ isMovie, limitedAge, sort }: LoadMoreItemsProps) => {
   useEffect(() => {
     if (inView) {
       loadMore();
-      console.log('in view')
     }
   }, [inView]);
 
