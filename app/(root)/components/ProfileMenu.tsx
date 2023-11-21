@@ -8,6 +8,7 @@ import { User } from "@prisma/client";
 import { profile } from "console";
 import { useRouter } from "next/navigation";
 import { saveProfileLocal } from "@/lib/utils";
+import { useItemsStore } from "@/hooks/useItemsStore";
 
 type ProfileMenuProps = {
     user: User
@@ -16,6 +17,7 @@ const ProfileMenu = ({user}: ProfileMenuProps) => {
 
     const [profile, setProfile] = useState<{name: string, imgUrl: string} |null>(null)
     const [visible, setVisible] = useState(false)
+    const {clearMovies, clearTVs, setPageM, setPageT, setShowM, setShowT, setSort} = useItemsStore( (state) => state)
     const router = useRouter()
 
     useEffect(() => {
@@ -37,6 +39,11 @@ const ProfileMenu = ({user}: ProfileMenuProps) => {
                         setVisible(false)
                         saveProfileLocal( router, prof.name, prof.image, prof.limitedAge!)
                         router.refresh()
+                        setPageM(1)
+                        setPageT(1)
+                        clearMovies()
+                        clearTVs()
+                        setSort(false)
                         }}>
                         <img className="h-12 w-12 object-cover overflow-hidden md:h-16 rounded-md" src={prof.image} alt="" />
                     </div>

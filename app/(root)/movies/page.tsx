@@ -35,7 +35,7 @@ const getByGenre = async (genres: string[], limited: number) => {
 export const fetchCache = 'only-no-store'
 
 const MoviesPage = async ({searchParams}: {searchParams: { sort_by_name: string | null }}) => {
-  console.log(searchParams.sort_by_name)
+  console.log('desde movies ' + searchParams.sort_by_name)
   const cookieStore = cookies()
   const limit = cookieStore.get('limitedAge')
 
