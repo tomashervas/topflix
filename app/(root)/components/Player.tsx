@@ -77,7 +77,7 @@ const Player = ({media, show, setShow}: PlayerProps) => {
                   videoRef.current!.pause()
                     cjs.cast("http://192.168.0.19:3435/movies/Goonies.mp4");
                 }}><FaChromecast size={20} className={showCast ? 'text-blue-400' : 'text-white'} /></button>}
-                <video ref={videoRef} className="mt-12 w-full md:w-2/3 aspect-[16/9] object-cover overflow-hidden"controls autoPlay controlsList="nodownload" src={media.videoUrl!}></video>
+                <video ref={videoRef} className="mt-12 w-full md:w-2/3 aspect-[16/9] object-cover overflow-hidden"controls autoPlay controlsList="nodownload" src={process.env.NEXT_PUBLIC_VIDEO_BASE_URL + media.videoUrl!}></video>
                 {showCast && 
                   <div className="p-4 absolute w-[70vw] bg-zinc-900 top-20 right-0">
                     <div className="flex items-center space-x-4 py-4">

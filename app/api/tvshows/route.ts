@@ -47,7 +47,7 @@ export async function POST(req: Request) {
             }
         })
         if(tvDB) {
-            return new NextResponse("Movie already exists", {status: 400})
+            return new NextResponse("Tvshow already exists", {status: 400})
         }
         const newTvshow = await prismadb.tVShow.create({
             data: {

@@ -30,7 +30,7 @@ const TVShowPage = async ({ params }: { params: { id: string } }) => {
     const [colorA, colorB] = await getColorsImg(Vibrant, tv?.thumbnailUrl!, limitedAge)
 
     return (
-        <div className={limitedAge < 12 ? 'bg-blue-700': 'bg-zinc-900'}>
+        <div className={limitedAge < 12 ? 'bg-blue-700': 'bg-zinc-900  flex flex-col'}>
             <BillboardVideo media={tv as TVShow} colors={[colorA, colorB]} limitedAge={limitedAge}/>
             <div className="p-4 md:p-8">
                 <p>Serie</p>

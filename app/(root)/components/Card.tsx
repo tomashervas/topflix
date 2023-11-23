@@ -15,9 +15,11 @@ interface CardProps {
 
 const Card = ({ item, isMovie, grid}: CardProps) => {
 
-  if (typeof localStorage === 'undefined') {
-    return null
+  const [mounted, setMounted] = useState(false)
+  if (!mounted) {
+    setMounted(true)
   }
+
   const profile = JSON.parse(localStorage.getItem('profile')!)
 
   const { data: favorites, mutate }: { data: Movie[] | TVShow[], mutate: Function } = useFetch(isMovie ? `/api/favorites?profile=${profile.name}` : `/api/favoritestv?profile=${profile.name}`)
@@ -31,7 +33,7 @@ const Card = ({ item, isMovie, grid}: CardProps) => {
     } else {
       setIsFavourite(favorites.some(favorite => favorite.id === item.id))
     }
-  }, [favorites])
+  }, [favorites, item.id])
 
 
 

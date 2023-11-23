@@ -8,11 +8,11 @@ const Layout = ({
     children: React.ReactNode
   }) => {
   return (
-    <>
+    <div className="flex flex-col justify-between min-h-full">
         <Navbar />
         {children}
       <Footer/>
-    </>
+    </div>
   )
 }
 export default Layout

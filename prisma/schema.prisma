@@ -135,14 +135,14 @@ type Season {
 }
 
 type Episode {
-  id_episode Int
+  id_episode Int?
   air_date String?
-  episode_number Int
-  name String
+  episode_number Int?
+  name String?
   overview String?
   runtime Int?
   still_path String?
   season_number Int
-  show_id Int
+  show_id Int?
   videoUrl String?
 }

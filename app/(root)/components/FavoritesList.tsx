@@ -3,7 +3,7 @@
 import useFetch from "@/hooks/useFetch"
 import Card from "./Card"
 import { Movie, TVShow } from "@prisma/client"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 
 interface MovieListProps {
     isMovie: boolean
@@ -11,10 +11,16 @@ interface MovieListProps {
 
 const FavoritesList = ({  isMovie}: MovieListProps) => {
 
-    //get profile from local storage
-    if(typeof localStorage === 'undefined') {
-        return null
+    const [mounted, setMounted] = useState(false)
+
+    if (!mounted) {
+        setMounted(true)
     }
+
+    // //get profile from local storage
+    // if(typeof localStorage === 'undefined') {
+    //     return null
+    // }
     const profile = JSON.parse(localStorage.getItem('profile')!)
     //console.log(profile)
 

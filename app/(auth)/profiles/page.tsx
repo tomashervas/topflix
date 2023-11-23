@@ -25,7 +25,7 @@ const ProfilesPage = async () => {
         <h1 className="text-2xl xl:text-4xl">¿Quién está viendo?</h1>
         <div className="flex justify-center items-center flex-wrap gap-4 mt-8">
           {userComplete?.profiles && userComplete?.profiles.length > 0 && userComplete?.profiles.map((profile) => (
-            <Avatar name={profile.name} imgUrl={profile.image} limitedAge={profile.limitedAge} />
+            <Avatar key={profile.name} name={profile.name} imgUrl={profile.image} limitedAge={profile.limitedAge} />
             ))
           }
           <NewAvatar />

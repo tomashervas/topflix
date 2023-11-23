@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import prismadb from '@/lib/prismadb'
-import { Movie } from '@/models/movie'
+import { Movie } from '@prisma/client'
 
 /* export function GET(){
     return new Response(JSON.stringify(movies))
@@ -34,10 +34,11 @@ export async function POST(req: Request) {
                     release_date: movie.release_date || '',
                     vote_average: movie.vote_average  || 0,
                     duration: movie.duration  || 0,
-                    content_rating: movie.content_rating  || '',
+                    content_rating: movie.content_rating,
                     budget: movie.budget,
                     revenue: movie.revenue,
-                    tagline: movie.tagline
+                    tagline: movie.tagline,
+                    trailer: movie.trailer
                 }
             })
             moviesStored.push(newMovie)
