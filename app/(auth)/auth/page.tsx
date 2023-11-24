@@ -27,7 +27,7 @@ const AuthPage = () => {
                 email,
                 password,
                 redirect: true,
-                callbackUrl: 'http://localhost:3000/profiles'
+                callbackUrl: process.env.NEXT_PUBLIC_DOMAIN_URL + '/profiles'
             })
 
         } catch (error) {
@@ -43,7 +43,7 @@ const AuthPage = () => {
                 username,
                 password
             })
-            router.push('http://localhost:3000/profiles')
+            router.push(process.env.NEXT_PUBLIC_DOMAIN_URL + '/profiles')
         } catch (error) {
             console.log(error)
         }
@@ -70,10 +70,10 @@ const AuthPage = () => {
                     </div>
                     <button onClick={variant==='login' ? login : register} className="mt-8 bg-red-500 hover:bg-red-700 py-2 px-4 font-semibold rounded-md transition w-full">{variant == "login" ? "Login" : "Sign Up"}</button>
                     <div className="flex flex-row items-center gap-4 mt-8 justify-center">
-                        <div onClick={() => signIn('google', { callbackUrl: 'http://localhost:3000/profiles' })} className="w-10 h-10  rounded-full flex items-center justify-center cursor-pointer hover:opacity-80 transition">
+                        <div onClick={() => signIn('google', { callbackUrl: process.env.NEXT_PUBLIC_DOMAIN_URL +'/profiles' })} className="w-10 h-10  rounded-full flex items-center justify-center cursor-pointer hover:opacity-80 transition">
                             <FcGoogle size={30}/>
                         </div>
-                        <div onClick={() => signIn('github', { callbackUrl: 'http://localhost:3000/profiles' })} className="w-10 h-10 rounded-full flex items-center justify-center cursor-pointer hover:opacity-80 transition">
+                        <div onClick={() => signIn('github', { callbackUrl: process.env.NEXT_PUBLIC_DOMAIN_URL +'/profiles' })} className="w-10 h-10 rounded-full flex items-center justify-center cursor-pointer hover:opacity-80 transition">
                             <FaGithub size={30}/>
                         </div>
 

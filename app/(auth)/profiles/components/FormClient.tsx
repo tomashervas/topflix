@@ -40,7 +40,7 @@ const FormClient = ({avatars, mail}: FormClientProps) => {
         })
         console.log(res)
         if(res.status === 201) {
-            router.push('http://localhost:3000/profiles')
+            router.push(process.env.NEXT_PUBLIC_DOMAIN_URL + '/profiles')
         }
         else {
             setErrors(err => err ? [...err, 'Error al crear el perfil'] : ['Error al crear el perfil'])

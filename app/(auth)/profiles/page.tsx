@@ -11,7 +11,7 @@ const ProfilesPage = async () => {
     const session = await getServerSession(authOptions)
 
     if(!session) {
-        return redirect('http://localhost:3000/auth')
+        return redirect(process.env.NEXT_PUBLIC_DOMAIN_URL + '/auth')
     }
 
     const userComplete: User | null = await prismadb.user.findUnique({
