@@ -8,13 +8,6 @@ import { authOptions } from "@/lib/auth";
 
 export async function POST(req: Request) {
 
-    const session = await getServerSession(authOptions);
-    if(!session) {
-        return new Response("Unauthorized", {status: 401})
-    }
-
-    if (req.method !== 'POST') return new NextResponse("Must be POST method", {status: 400})
-
     try {
         const {email, username, password } = await req.json()
         console.log(email, username, password)
