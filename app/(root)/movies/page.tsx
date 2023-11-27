@@ -8,6 +8,7 @@ import { cookies } from "next/headers";
 import All from "../components/All";
 import { getColorsImg } from "@/lib/utils";
 import Loader from "../components/Loader";
+import Billboard from "../components/Billboard";
 
 const getByGenre = (genres: string[], limited: number) => {
   return prismadb.movie.findMany({
@@ -170,7 +171,7 @@ const MoviesPage = async ({searchParams}: {searchParams: { sort_by_name: string 
 
   return (
     <div className={limitedAge < 12 ? 'bg-blue-700': 'bg-zinc-900'}>
-        <BillboardVideo colors={[colorA, colorB]}  media={movie[0] as Movie} limitedAge={limitedAge}/>
+        <Billboard colors={[colorA, colorB]}  media={movie[0] as Movie} limitedAge={limitedAge}/>
         <ScrollList title='Añadido recientemente' url={'/api/movies?limitedAge=' + limitedAge} isMovie/>
         {thrillersResults.length > 0 && <ScrollListServer title='El mejor suspense' data={thrillersResults} isMovie />}
         {ficcionResults.length > 0 && <ScrollListServer title='Descubre nuevos horizontes' data={ficcionResults} isMovie />}

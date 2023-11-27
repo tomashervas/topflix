@@ -18,7 +18,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>{children}</body>
-      <Script src="https://cdnjs.cloudflare.com/ajax/libs/castjs/5.2.0/cast.min.js" />
     </html>
   )
 }

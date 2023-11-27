@@ -2,6 +2,7 @@
 
 import useFetch from "@/hooks/useFetch"
 import { TVShow, Movie } from "@prisma/client"
+import Image from "next/image"
 import { useRouter } from "next/navigation"
 import Vibrant from "node-vibrant"
 import { title } from "process"
@@ -51,9 +52,9 @@ const Billboard = ({ media, colors, limitedAge }: BillboardProps) => {
       {/* atoplay! */}
       {media?.trailer ?
         <iframe className="mt-12 w-full aspect-[16/9] h-[40vh] md:h-[56.25vw] object-cover overflow-hidden brightness-[60%]" src={media?.trailer}></iframe> :
-        <div className={'p-6 md:p-0'} style={gradientStyle}>
-          <div className="mt-12 w-full aspect-[16/9] h-[50vh] md:h-[56.25vw] object-cover overflow-hidden rounded-lg">
-            <img src={poster} alt="" />
+        <div className={'p-6 mt-12 md:p-0'} style={gradientStyle}>
+          <div className="w-full h-96 md:h-[56.25vw] overflow-hidden rounded-lg relative">
+            <Image fill src={poster} className="object-cover object-top" alt={media.name}/>
           </div>
         </div>}
       <div className="absolute top-[17%] md:top-[40%] w-full p-8 md:ml-16">

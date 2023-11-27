@@ -1,6 +1,7 @@
 "use client"
 
 import { Movie, TVShow } from "@prisma/client"
+import Image from "next/image"
 import { useEffect, useState } from "react"
 
 interface BillboardVideoProps {
@@ -42,8 +43,8 @@ const BillboardVideo = ({media, colors, limitedAge }: BillboardVideoProps) => {
         {media?.trailer ?
         <iframe className="mt-12 mb-4 w-full aspect-[16/9] h-[40vh] md:h-[56.25vw] object-cover overflow-hidden" src={media?.trailer}></iframe> :
         <div className={'p-6 mt-12 md:p-0'} style={gradientStyle}>
-          <div className="w-full aspect-[16/9] h-[50vh] md:h-[56.25vw] object-cover overflow-hidden rounded-lg">
-            <img src={poster} alt=""/>
+          <div className="w-full h-96 md:h-[56.25vw] overflow-hidden rounded-lg relative">
+            <Image fill src={poster} className="object-cover object-top" alt={media.name}/>
           </div>
         </div>}
     </div>

@@ -7,6 +7,7 @@ import prismadb from "@/lib/prismadb";
 import ScrollList from "../components/ScrollList"
 import ScrollListServer from "../components/ScrollListServer"
 import Vibrant from "node-vibrant";
+import Billboard from "../components/Billboard";
 
 const getByGenre = (genres: string[], limited: number) => {
   return prismadb.tVShow.findMany({
@@ -163,7 +164,7 @@ const TVsPage = async ({searchParams}: {searchParams: { sort_by_name: string | n
 
   return (
     <div className={limitedAge < 12 ? 'bg-blue-700': 'bg-zinc-900'}>
-        <BillboardVideo colors={[colorA, colorB]}  media={tv[0] as TVShow} limitedAge={limitedAge}/>
+        <Billboard colors={[colorA, colorB]}  media={tv[0] as TVShow} limitedAge={limitedAge}/>
         <ScrollList title='Añadido recientemente' url={'/api/tvshows?limitedAge=' + limitedAge} isMovie={false}/>
         {thrillersResults.length > 0 && <ScrollListServer title='El mejor suspense' data={thrillersResults} isMovie={false} />}
         {ficcionResults.length > 0 && <ScrollListServer title='Descubre nuevos horizontes' data={ficcionResults} isMovie={false} />}
@@ -171,7 +172,7 @@ const TVsPage = async ({searchParams}: {searchParams: { sort_by_name: string | n
         {accionResults.length > 0 && <ScrollListServer title='Acción y aventura' data={accionResults} isMovie={false} />}
         {comediaResults.length > 0 && <ScrollListServer title='Para reír un rato' data={comediaResults} isMovie={false} />}
         {familiarResults.length > 0 && <ScrollListServer title='Para toda la familia' data={familiarResults} isMovie={false} />}
-        {noventasResults.length > 0 && <ScrollListServer title='Películas de los 90' data={noventasResults} isMovie={false} />}
+        {noventasResults.length > 0 && <ScrollListServer title='Series de los 90' data={noventasResults} isMovie={false} />}
         {clasicosResults.length > 0 && <ScrollListServer title='Grandes clásicos' data={clasicosResults} isMovie={false} />}
         <All sort={searchParams.sort_by_name} isMovie={false}/>
 
