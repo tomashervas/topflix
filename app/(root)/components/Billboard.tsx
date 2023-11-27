@@ -50,13 +50,13 @@ const Billboard = ({ media, colors, limitedAge }: BillboardProps) => {
   return (
     <div className="relative">
       {/* atoplay! */}
-      {media?.trailer ?
-        <iframe className="mt-12 w-full aspect-[16/9] h-[40vh] md:h-[56.25vw] object-cover overflow-hidden brightness-[60%]" src={media?.trailer}></iframe> :
+      {/* {media?.trailer ?
+        <iframe className="mt-12 w-full aspect-[16/9] h-[40vh] md:h-[56.25vw] object-cover overflow-hidden brightness-[60%]" src={media?.trailer}></iframe> : */}
         <div className={'p-6 mt-12 md:p-0'} style={gradientStyle}>
           <div className="w-full h-96 md:h-[56.25vw] overflow-hidden rounded-lg relative">
             <Image fill src={poster} className="object-cover object-top" alt={media.name}/>
           </div>
-        </div>}
+        </div>{/* } */}
       <div className="absolute top-[17%] md:top-[40%] w-full p-8 md:ml-16">
         <p className="text-2xl md:text-5xl lg:text-6xl font-bold drop-shadow-xl">{('title' in media) ? media?.title : (media as TVShow).nameShow}</p>
         <div className="">

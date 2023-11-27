@@ -1,7 +1,6 @@
 import Vibrant from "node-vibrant";
 import BillboardVideo from "../components/BillboardVideo";
 import ScrollList from "../components/ScrollList"
-import ScrollListServer from "../components/ScrollListServer"
 import prismadb from "@/lib/prismadb";
 import { Movie } from "@prisma/client";
 import { cookies } from "next/headers";
@@ -9,6 +8,9 @@ import All from "../components/All";
 import { getColorsImg } from "@/lib/utils";
 import Loader from "../components/Loader";
 import Billboard from "../components/Billboard";
+import dynamic from "next/dynamic";
+
+const ScrollListServerLazy = dynamic(() => import("../components/ScrollListServer"))
 
 const getByGenre = (genres: string[], limited: number) => {
   return prismadb.movie.findMany({
@@ -173,16 +175,16 @@ const MoviesPage = async ({searchParams}: {searchParams: { sort_by_name: string 
     <div className={limitedAge < 12 ? 'bg-blue-700': 'bg-zinc-900'}>
         <Billboard colors={[colorA, colorB]}  media={movie[0] as Movie} limitedAge={limitedAge}/>
         <ScrollList title='Añadido recientemente' url={'/api/movies?limitedAge=' + limitedAge} isMovie/>
-        {thrillersResults.length > 0 && <ScrollListServer title='El mejor suspense' data={thrillersResults} isMovie />}
-        {ficcionResults.length > 0 && <ScrollListServer title='Descubre nuevos horizontes' data={ficcionResults} isMovie />}
-        {dramaResults.length > 0 && <ScrollListServer title='Un poco de drama' data={dramaResults} isMovie />}
-        {accionResults.length > 0 && <ScrollListServer title='Acción y aventura' data={accionResults} isMovie />}
-        {comediaResults.length > 0 && <ScrollListServer title='Para reír un rato' data={comediaResults} isMovie />}
-        {familiarResults.length > 0 && <ScrollListServer title='Para toda la familia' data={familiarResults} isMovie />}
-        {romanceResults.length > 0 && <ScrollListServer title='Siempre nos quedará París' data={romanceResults} isMovie />}
-        {terrorResults.length > 0 && <ScrollListServer title='Para pasarlo de miedo' data={terrorResults} isMovie />}
-        {noventasResults.length > 0 && <ScrollListServer title='Películas de los 90' data={noventasResults} isMovie />}
-        {clasicosResults.length > 0 && <ScrollListServer title='Grandes clásicos' data={clasicosResults} isMovie />}
+        {thrillersResults.length > 0 && <ScrollListServerLazy title='El mejor suspense' data={thrillersResults} isMovie />}
+        {ficcionResults.length > 0 && <ScrollListServerLazy title='Descubre nuevos horizontes' data={ficcionResults} isMovie />}
+        {dramaResults.length > 0 && <ScrollListServerLazy title='Un poco de drama' data={dramaResults} isMovie />}
+        {accionResults.length > 0 && <ScrollListServerLazy title='Acción y aventura' data={accionResults} isMovie />}
+        {comediaResults.length > 0 && <ScrollListServerLazy title='Para reír un rato' data={comediaResults} isMovie />}
+        {familiarResults.length > 0 && <ScrollListServerLazy title='Para toda la familia' data={familiarResults} isMovie />}
+        {romanceResults.length > 0 && <ScrollListServerLazy title='Siempre nos quedará París' data={romanceResults} isMovie />}
+        {terrorResults.length > 0 && <ScrollListServerLazy title='Para pasarlo de miedo' data={terrorResults} isMovie />}
+        {noventasResults.length > 0 && <ScrollListServerLazy title='Películas de los 90' data={noventasResults} isMovie />}
+        {clasicosResults.length > 0 && <ScrollListServerLazy title='Grandes clásicos' data={clasicosResults} isMovie />}
         <All sort={searchParams.sort_by_name} isMovie/>
 
     </div>

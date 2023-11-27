@@ -5,9 +5,11 @@ import All from "../components/All";
 import BillboardVideo from "../components/BillboardVideo";
 import prismadb from "@/lib/prismadb";
 import ScrollList from "../components/ScrollList"
-import ScrollListServer from "../components/ScrollListServer"
 import Vibrant from "node-vibrant";
 import Billboard from "../components/Billboard";
+import dynamic from "next/dynamic";
+
+const ScrollListServerLazy = dynamic(() => import("../components/ScrollListServer"))
 
 const getByGenre = (genres: string[], limited: number) => {
   return prismadb.tVShow.findMany({
@@ -166,14 +168,14 @@ const TVsPage = async ({searchParams}: {searchParams: { sort_by_name: string | n
     <div className={limitedAge < 12 ? 'bg-blue-700': 'bg-zinc-900'}>
         <Billboard colors={[colorA, colorB]}  media={tv[0] as TVShow} limitedAge={limitedAge}/>
         <ScrollList title='Añadido recientemente' url={'/api/tvshows?limitedAge=' + limitedAge} isMovie={false}/>
-        {thrillersResults.length > 0 && <ScrollListServer title='El mejor suspense' data={thrillersResults} isMovie={false} />}
-        {ficcionResults.length > 0 && <ScrollListServer title='Descubre nuevos horizontes' data={ficcionResults} isMovie={false} />}
-        {dramaResults.length > 0 && <ScrollListServer title='Un poco de drama' data={dramaResults} isMovie={false} />}
-        {accionResults.length > 0 && <ScrollListServer title='Acción y aventura' data={accionResults} isMovie={false} />}
-        {comediaResults.length > 0 && <ScrollListServer title='Para reír un rato' data={comediaResults} isMovie={false} />}
-        {familiarResults.length > 0 && <ScrollListServer title='Para toda la familia' data={familiarResults} isMovie={false} />}
-        {noventasResults.length > 0 && <ScrollListServer title='Series de los 90' data={noventasResults} isMovie={false} />}
-        {clasicosResults.length > 0 && <ScrollListServer title='Grandes clásicos' data={clasicosResults} isMovie={false} />}
+        {thrillersResults.length > 0 && <ScrollListServerLazy title='El mejor suspense' data={thrillersResults} isMovie={false} />}
+        {ficcionResults.length > 0 && <ScrollListServerLazy title='Descubre nuevos horizontes' data={ficcionResults} isMovie={false} />}
+        {dramaResults.length > 0 && <ScrollListServerLazy title='Un poco de drama' data={dramaResults} isMovie={false} />}
+        {accionResults.length > 0 && <ScrollListServerLazy title='Acción y aventura' data={accionResults} isMovie={false} />}
+        {comediaResults.length > 0 && <ScrollListServerLazy title='Para reír un rato' data={comediaResults} isMovie={false} />}
+        {familiarResults.length > 0 && <ScrollListServerLazy title='Para toda la familia' data={familiarResults} isMovie={false} />}
+        {noventasResults.length > 0 && <ScrollListServerLazy title='Series de los 90' data={noventasResults} isMovie={false} />}
+        {clasicosResults.length > 0 && <ScrollListServerLazy title='Grandes clásicos' data={clasicosResults} isMovie={false} />}
         <All sort={searchParams.sort_by_name} isMovie={false}/>
 
     </div>

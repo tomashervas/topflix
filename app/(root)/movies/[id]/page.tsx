@@ -28,11 +28,11 @@ const MoviePage = async ({ params }: { params: { id: string } }) => {
     return (
         <div className={`${limitedAge < 12 ? 'bg-blue-700': 'bg-zinc-900'}  flex flex-col relative`}>
             <BillboardVideo colors={[colorA, colorB]} media={movie as Movie} limitedAge={limitedAge } />
-            <div className="md:absolute top-[30vh] left-8 p-4">
+            <div className="md:absolute top-[30vh] left-8 p-4 pb-0">
                 <p className="text-red-600 text-2xl md:text-3xl shadow">Película</p>
                 <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold py-1">{movie?.title}</h1>
             </div>
-            <div className="p-4">
+            <div className="p-4 pt2">
                 <p>Director: {movie?.director.map((director) => director).join(', ')}</p>
                 <div className="flex items-center space-x-4 py-2">
                     <p className="text-gray-400 text-sm">Estreno: {movie?.release_date}</p>
