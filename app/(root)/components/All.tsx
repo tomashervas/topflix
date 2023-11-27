@@ -20,7 +20,7 @@ const All = async ({ isMovie, sort }: { isMovie: boolean, sort: string | undefin
         {/* <a className="text-zinc-400 p-2 mr-6 rounded-xl border border-zinc-400 hover:text-zinc-100 hover:border-zinc-100" href={isMovie ? '/movies?sort_by_name=true' : '/tvshows?sort_by_name=true' } ><FaSortAlphaDown size={20}/></a> */}
         <SortIconButton isMovie={isMovie} />
       </div>
-      <div className="grid grid-cols-3 md:grid-cols-4 justify-items-center gap-4 p-6">
+      <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2 md:gap-4 p-6 justify-items-stretch">
         <AllItems items={items} isMovie={isMovie} />
         <LoadMoreItems isMovie={isMovie} limitedAge={limitedAge} />
       </div>

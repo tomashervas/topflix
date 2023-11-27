@@ -8,8 +8,8 @@ import ScrollList from "../components/ScrollList"
 import ScrollListServer from "../components/ScrollListServer"
 import Vibrant from "node-vibrant";
 
-const getByGenre = async (genres: string[], limited: number) => {
-  return await prismadb.tVShow.findMany({
+const getByGenre = (genres: string[], limited: number) => {
+  return prismadb.tVShow.findMany({
     where:{
       AND: [
         {
@@ -30,8 +30,6 @@ const getByGenre = async (genres: string[], limited: number) => {
     take: 20
   })
 }
-
-export const fetchCache = 'only-no-store'
 
 const TVsPage = async ({searchParams}: {searchParams: { sort_by_name: string | null }}) => {
   console.log('desde tvs ' + searchParams.sort_by_name)
@@ -98,7 +96,7 @@ const TVsPage = async ({searchParams}: {searchParams: { sort_by_name: string | n
   }
 
 
-  const clasicos = await prismadb.tVShow.findMany({
+  const clasicos = prismadb.tVShow.findMany({
     where: {
       AND: [
         {
@@ -119,7 +117,7 @@ const TVsPage = async ({searchParams}: {searchParams: { sort_by_name: string | n
     take: 20
   })
 
-  const noventas = await prismadb.tVShow.findMany({
+  const noventas = prismadb.tVShow.findMany({
     where: {
       AND: [
         {
@@ -145,36 +143,36 @@ const TVsPage = async ({searchParams}: {searchParams: { sort_by_name: string | n
     take: 20
   })
 
-  const thrillers = await getByGenre(['Crimen','Misterio'], limitedAge)
+  const thrillers = getByGenre(['Crimen','Misterio'], limitedAge)
 
-  const comedia = await getByGenre(['Comedia'], limitedAge)
+  const comedia = getByGenre(['Comedia'], limitedAge)
 
-  const drama = await getByGenre(['Drama'], limitedAge)
+  const drama = getByGenre(['Drama'], limitedAge)
 
-  const accion = await getByGenre(['Action & Adventure'], limitedAge)
+  const accion = getByGenre(['Action & Adventure'], limitedAge)
    
-  const ficcion = await getByGenre(['Sci-Fi & Fantasy'], limitedAge)
+  const ficcion = getByGenre(['Sci-Fi & Fantasy'], limitedAge)
    
-  const familiar = await getByGenre(['Familia', 'Kids'], limitedAge)
+  const familiar = getByGenre(['Familia', 'Kids'], limitedAge)
+
+  const [thrillersResults, comediaResults, dramaResults, accionResults, ficcionResults, familiarResults, noventasResults, clasicosResults] = await Promise.all([thrillers, comedia, drama, accion, ficcion, familiar, noventas, clasicos])
 
   const [colorA, colorB] = await getColorsImg(Vibrant, tv[0]?.thumbnailUrl!, limitedAge)
     // console.log(palette.DarkMuted?.hex)
-
-  
 
 
   return (
     <div className={limitedAge < 12 ? 'bg-blue-700': 'bg-zinc-900'}>
         <BillboardVideo colors={[colorA, colorB]}  media={tv[0] as TVShow} limitedAge={limitedAge}/>
         <ScrollList title='Añadido recientemente' url={'/api/tvshows?limitedAge=' + limitedAge} isMovie={false}/>
-        {thrillers.length > 0 && <ScrollListServer title='El mejor suspense' data={thrillers} isMovie={false} />}
-        {ficcion.length > 0 && <ScrollListServer title='Descubre nuevos horizontes' data={ficcion} isMovie={false} />}
-        {drama.length > 0 && <ScrollListServer title='Un poco de drama' data={drama} isMovie={false} />}
-        {accion.length > 0 && <ScrollListServer title='Acción y aventura' data={accion} isMovie={false} />}
-        {comedia.length > 0 && <ScrollListServer title='Para reír un rato' data={comedia} isMovie={false} />}
-        {familiar.length > 0 && <ScrollListServer title='Para toda la familia' data={familiar} isMovie={false} />}
-        {noventas.length > 0 && <ScrollListServer title='Películas de los 90' data={noventas} isMovie={false} />}
-        {clasicos.length > 0 && <ScrollListServer title='Grandes clásicos' data={clasicos} isMovie={false} />}
+        {thrillersResults.length > 0 && <ScrollListServer title='El mejor suspense' data={thrillersResults} isMovie={false} />}
+        {ficcionResults.length > 0 && <ScrollListServer title='Descubre nuevos horizontes' data={ficcionResults} isMovie={false} />}
+        {dramaResults.length > 0 && <ScrollListServer title='Un poco de drama' data={dramaResults} isMovie={false} />}
+        {accionResults.length > 0 && <ScrollListServer title='Acción y aventura' data={accionResults} isMovie={false} />}
+        {comediaResults.length > 0 && <ScrollListServer title='Para reír un rato' data={comediaResults} isMovie={false} />}
+        {familiarResults.length > 0 && <ScrollListServer title='Para toda la familia' data={familiarResults} isMovie={false} />}
+        {noventasResults.length > 0 && <ScrollListServer title='Películas de los 90' data={noventasResults} isMovie={false} />}
+        {clasicosResults.length > 0 && <ScrollListServer title='Grandes clásicos' data={clasicosResults} isMovie={false} />}
         <All sort={searchParams.sort_by_name} isMovie={false}/>
 
     </div>

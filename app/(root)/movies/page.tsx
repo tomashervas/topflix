@@ -9,8 +9,8 @@ import All from "../components/All";
 import { getColorsImg } from "@/lib/utils";
 import Loader from "../components/Loader";
 
-const getByGenre = async (genres: string[], limited: number) => {
-  return await prismadb.movie.findMany({
+const getByGenre = (genres: string[], limited: number) => {
+  return prismadb.movie.findMany({
     where:{
       AND: [
         {
@@ -99,7 +99,7 @@ const MoviesPage = async ({searchParams}: {searchParams: { sort_by_name: string 
   }
 
 
-  const clasicos = await prismadb.movie.findMany({
+  const clasicos = prismadb.movie.findMany({
     where: {
       AND: [
         {
@@ -120,7 +120,7 @@ const MoviesPage = async ({searchParams}: {searchParams: { sort_by_name: string 
     take: 20
   })
 
-  const noventas = await prismadb.movie.findMany({
+  const noventas = prismadb.movie.findMany({
     where: {
       AND: [
         {
@@ -146,31 +146,23 @@ const MoviesPage = async ({searchParams}: {searchParams: { sort_by_name: string 
     take: 20
   })
 
-  const thrillers = await getByGenre(['Crimen','Misterio', 'Suspense'], limitedAge)
+  const thrillers = getByGenre(['Crimen','Misterio', 'Suspense'], limitedAge)
 
-  const comedia = await getByGenre(['Comedia'], limitedAge)
+  const comedia = getByGenre(['Comedia'], limitedAge)
 
-  const drama = await getByGenre(['Drama'], limitedAge)
+  const drama = getByGenre(['Drama'], limitedAge)
 
-  const accion = await getByGenre(['Acción', 'Aventura'], limitedAge)
+  const accion = getByGenre(['Acción', 'Aventura'], limitedAge)
 
-  const romance = await prismadb.movie.findMany({
-    where:{
-      genres: {
-        hasSome: ['Romance']
-      }
-    },
-    orderBy: {
-      release_date: 'desc'
-    },
-    take: 20
-  })
+  const romance = getByGenre(['Romance'], limitedAge)
 
-  const ficcion = await getByGenre(['Ciencia ficción'], limitedAge)
+  const ficcion = getByGenre(['Ciencia ficción'], limitedAge)
 
-  const familiar = await getByGenre(['Familia'], limitedAge)
+  const familiar = getByGenre(['Familia'], limitedAge)
 
-  const terror = await getByGenre(['Terror'], limitedAge)
+  const terror = getByGenre(['Terror'], limitedAge)
+
+  const [ thrillersResults, comediaResults, dramaResults, accionResults, romanceResults, ficcionResults, familiarResults, terrorResults, clasicosResults, noventasResults] = await Promise.all([thrillers, comedia, drama, accion, romance, ficcion, familiar, terror, clasicos, noventas])
   
   const [colorA, colorB] = await getColorsImg(Vibrant, movie[0]?.thumbnailUrl!, limitedAge)
   
@@ -180,16 +172,16 @@ const MoviesPage = async ({searchParams}: {searchParams: { sort_by_name: string 
     <div className={limitedAge < 12 ? 'bg-blue-700': 'bg-zinc-900'}>
         <BillboardVideo colors={[colorA, colorB]}  media={movie[0] as Movie} limitedAge={limitedAge}/>
         <ScrollList title='Añadido recientemente' url={'/api/movies?limitedAge=' + limitedAge} isMovie/>
-        {thrillers.length > 0 && <ScrollListServer title='El mejor suspense' data={thrillers} isMovie />}
-        {ficcion.length > 0 && <ScrollListServer title='Descubre nuevos horizontes' data={ficcion} isMovie />}
-        {drama.length > 0 && <ScrollListServer title='Un poco de drama' data={drama} isMovie />}
-        {accion.length > 0 && <ScrollListServer title='Acción y aventura' data={accion} isMovie />}
-        {comedia.length > 0 && <ScrollListServer title='Para reír un rato' data={comedia} isMovie />}
-        {familiar.length > 0 && <ScrollListServer title='Para toda la familia' data={familiar} isMovie />}
-        {romance.length > 0 && <ScrollListServer title='Siempre nos quedará París' data={romance} isMovie />}
-        {terror.length > 0 && <ScrollListServer title='Para pasarlo de miedo' data={terror} isMovie />}
-        {noventas.length > 0 && <ScrollListServer title='Películas de los 90' data={noventas} isMovie />}
-        {clasicos.length > 0 && <ScrollListServer title='Grandes clásicos' data={clasicos} isMovie />}
+        {thrillersResults.length > 0 && <ScrollListServer title='El mejor suspense' data={thrillersResults} isMovie />}
+        {ficcionResults.length > 0 && <ScrollListServer title='Descubre nuevos horizontes' data={ficcionResults} isMovie />}
+        {dramaResults.length > 0 && <ScrollListServer title='Un poco de drama' data={dramaResults} isMovie />}
+        {accionResults.length > 0 && <ScrollListServer title='Acción y aventura' data={accionResults} isMovie />}
+        {comediaResults.length > 0 && <ScrollListServer title='Para reír un rato' data={comediaResults} isMovie />}
+        {familiarResults.length > 0 && <ScrollListServer title='Para toda la familia' data={familiarResults} isMovie />}
+        {romanceResults.length > 0 && <ScrollListServer title='Siempre nos quedará París' data={romanceResults} isMovie />}
+        {terrorResults.length > 0 && <ScrollListServer title='Para pasarlo de miedo' data={terrorResults} isMovie />}
+        {noventasResults.length > 0 && <ScrollListServer title='Películas de los 90' data={noventasResults} isMovie />}
+        {clasicosResults.length > 0 && <ScrollListServer title='Grandes clásicos' data={clasicosResults} isMovie />}
         <All sort={searchParams.sort_by_name} isMovie/>
 
     </div>
