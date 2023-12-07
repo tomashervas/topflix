@@ -1,12 +1,20 @@
 import { NextResponse } from 'next/server'
 import prismadb from '@/lib/prismadb'
 import { Movie } from '@prisma/client'
+import { verifyToken } from '@/lib/jwt'
+import { JwtPayload } from 'jsonwebtoken'
 
 /* export function GET(){
     return new Response(JSON.stringify(movies))
 } */
 
 export async function POST(req: Request) {
+    const token = req.headers.get('Authorization')?.split(' ')[1]
+    const decoded = verifyToken(token || '')
+
+    if((decoded as JwtPayload).user  !== process.env.ADMIN) {
+        return new NextResponse('Unauthorized', { status: 403 })
+    }
 
     const movies = await req.json()
     const moviesStored: any = []

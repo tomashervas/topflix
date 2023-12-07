@@ -8,9 +8,22 @@ import Vibrant from "node-vibrant";
 import { Movie } from "@prisma/client";
 import { cookies } from "next/headers";
 import { getColorsImg } from "@/lib/utils";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
+import { redirect } from "next/navigation";
+import { generateToken } from "@/lib/jwt";
 
 const MoviePage = async ({ params }: { params: { id: string } }) => {
 
+    const session = await getServerSession(authOptions)
+    if(!session) {
+        return redirect(process.env.NEXT_PUBLIC_DOMAIN_URL + '/auth')
+    }
+
+    // const token = generateToken(session.user!.email!, session.user!.email === process.env.ADMIN)
+    const token = generateToken(session.user!.email!, false)
+
+    const isAdmin = session.user!.email === process.env.ADMIN
 
     const movie = await prismadb.movie.findUnique({
         where: {
@@ -29,7 +42,7 @@ const MoviePage = async ({ params }: { params: { id: string } }) => {
         <div className={`${limitedAge < 12 ? 'bg-blue-700': 'bg-zinc-900'}  flex flex-col relative`}>
             <BillboardVideo colors={[colorA, colorB]} media={movie as Movie} limitedAge={limitedAge } />
             <div className="md:absolute top-[30vh] left-8 p-4 pb-0">
-                <p className="text-red-600 text-2xl md:text-3xl shadow">Película</p>
+                <p className="text-red-600 text-xl md:text-2xl shadow">Película</p>
                 <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold py-1">{movie?.title}</h1>
             </div>
             <div className="p-4 pt2">
@@ -39,7 +52,8 @@ const MoviePage = async ({ params }: { params: { id: string } }) => {
                     <Budget rating={movie?.content_rating!} />
                     <p>{movie?.duration} min</p>
                 </div>
-                <MoviePlayer media={movie as Movie} />
+
+                {isAdmin && <MoviePlayer media={movie as Movie} token={token}/>}
 
                 <div className="my-2">
                     <div tabIndex={1} className="line-clamp-4 focus:line-clamp-none"><span className="font-semibold">Sinopsis</span>: {movie?.overview}</div>

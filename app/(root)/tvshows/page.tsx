@@ -8,10 +8,14 @@ import ScrollList from "../components/ScrollList"
 import Vibrant from "node-vibrant";
 import Billboard from "../components/Billboard";
 import dynamic from "next/dynamic";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
+import { redirect } from "next/navigation";
 
 const ScrollListServerLazy = dynamic(() => import("../components/ScrollListServer"))
 
 const getByGenre = (genres: string[], limited: number) => {
+  
   return prismadb.tVShow.findMany({
     where:{
       AND: [
@@ -35,6 +39,12 @@ const getByGenre = (genres: string[], limited: number) => {
 }
 
 const TVsPage = async ({searchParams}: {searchParams: { sort_by_name: string | null }}) => {
+  
+  const session = await getServerSession(authOptions)
+    if(!session) {
+        return redirect(process.env.NEXT_PUBLIC_DOMAIN_URL + '/auth')
+    }
+  
   console.log('desde tvs ' + searchParams.sort_by_name)
   const cookieStore = cookies()
   const limit = cookieStore.get('limitedAge')

@@ -3,6 +3,8 @@ import prismadb from '@/lib/prismadb'
 import { TVShow } from '@prisma/client'
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
+import { verifyToken } from '@/lib/jwt';
+import { JwtPayload } from 'jsonwebtoken';
 
 
 export async function GET(request: Request) {
@@ -36,6 +38,14 @@ export async function GET(request: Request) {
 }
 
 export async function POST(req: Request) {
+
+    const token = req.headers.get('Authorization')?.split(' ')[1]
+    const decoded = verifyToken(token || '')
+
+    if((decoded as JwtPayload).user  !== process.env.ADMIN) {
+        return new NextResponse('Unauthorized', { status: 403 })
+    }
+
     const tv: TVShow = await req.json()    
     try {
         if(!tv) {

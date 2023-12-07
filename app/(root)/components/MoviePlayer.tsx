@@ -7,15 +7,16 @@ import { Episode, Movie, TVShow } from "@prisma/client"
 import Player from "./Player"
 
 interface MoviePlayerProps {
-    media: Movie | Episode
+    media: Movie | Episode,
+    token: string
 }
 
 
-const MoviePlayer = ({media}: MoviePlayerProps) => {
+const MoviePlayer = ({media, token}: MoviePlayerProps) => {
 
     const [mounted, setMounted] = useState(false)
     const [showPlayer, setShowPlayer] = useState(false)
-
+    
     useEffect(() => {
       setMounted(true)
 
@@ -28,7 +29,7 @@ const MoviePlayer = ({media}: MoviePlayerProps) => {
   return (
     <div className="relative">
         <ButtonSolid setAction={() => setShowPlayer(true)}/>
-        <Player media={media} show={showPlayer} setShow={setShowPlayer}/> 
+        <Player media={media} show={showPlayer} setShow={setShowPlayer} token={token}/> 
     </div>
   )
 }

@@ -8,16 +8,18 @@ import PlayButton from "./PlayButton"
 import Image from "next/image"
 
 interface SeasonsProps {
-    tv: TVShow
+    tv: TVShow,
+    token: string,
+    isAdmin: boolean
 }
-const Seasons = ({ tv }: SeasonsProps) => {
+const Seasons = ({ tv, token, isAdmin}: SeasonsProps) => {
     const [value, setValue] = useState<number>(0)
     const [showPlayer, setShowPlayer] = useState(false)
     const [episode, setEpisode] = useState(tv?.seasons[0].episodes[0])
 
     return (
         <div>
-            <Player media={episode as Episode} show={showPlayer} setShow={setShowPlayer} />
+            {isAdmin && <Player media={episode as Episode} show={showPlayer} setShow={setShowPlayer} token={token}/>}
 
             <Select className="w-full md:w-1/4" classNames={{
                 control: (state) => "bg-transparent text-zinc-200 border border-zinc-200 rounded-md py-1 px-2 my-3",
@@ -43,7 +45,7 @@ const Seasons = ({ tv }: SeasonsProps) => {
                                     <div className="flex flex-col justify-between">
                                         <p>{episode.episode_number}- {episode.name}</p>
                                         {episode.runtime && <p className="text-zinc-400 text-xs">{episode.runtime} min.</p>}
-                                        {episode.videoUrl && <PlayButton action={() => {
+                                        {isAdmin &&episode.videoUrl && <PlayButton action={() => {
                                             setEpisode(tv?.seasons[0].season_number === 0 ? tv?.seasons[+season.season_number].episodes[+episode.episode_number! - 1] : tv?.seasons[+season.season_number - 1].episodes[+episode.episode_number! - 1])
                                             setShowPlayer(true)
                                         }} />}
