@@ -20,8 +20,8 @@ const MoviePage = async ({ params }: { params: { id: string } }) => {
         return redirect(process.env.NEXT_PUBLIC_DOMAIN_URL + '/auth')
     }
 
-    // const token = generateToken(session.user!.email!, session.user!.email === process.env.ADMIN)
-    const token = generateToken(session.user!.email!, false)
+    const token = generateToken(session.user!.email!, session.user!.email === process.env.ADMIN)
+    // const token = generateToken(session.user!.email!, false)
 
     const isAdmin = session.user!.email === process.env.ADMIN
 

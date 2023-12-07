@@ -27,7 +27,7 @@ export default async function Home(/* {searchParams}: {searchParams: { limitedAg
   // const limitedAge = (!searchParams.limitedAge || searchParams.limitedAge === 'null') ? 20 : Number( searchParams.limitedAge )
   // const limitedAge = 7
 
-  console.log('limited cookie: ' + limitedAge, typeof limitedAge)
+  //console.log('limited cookie: ' + limitedAge, typeof limitedAge)
 
   const movieOrTV = (Math.floor(Math.random() * 2))
 
@@ -76,7 +76,7 @@ export default async function Home(/* {searchParams}: {searchParams: { limitedAg
 
   const [colorA, colorB] = await getColorsImg(Vibrant, item[0]?.thumbnailUrl!, limitedAge)
 
-  console.log('item: ' + item[0]?.name)
+  //console.log('item: ' + item[0]?.name)
 
   return (
     <div className={limitedAge < 12 ? 'bg-blue-700' : 'bg-zinc-900'}>

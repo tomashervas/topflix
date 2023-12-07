@@ -10,7 +10,7 @@ export async function POST(req: Request) {
 
     try {
         const {email, username, password } = await req.json()
-        console.log(email, username, password)
+        //console.log(email, username, password)
 
         const existingUser = await prismadb.user.findFirst({
             where: {

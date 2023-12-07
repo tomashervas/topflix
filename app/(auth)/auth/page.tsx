@@ -36,7 +36,7 @@ const AuthPage = () => {
     }
 
     const register = async ()=>{
-        console.log(email, username, password)
+        //console.log(email, username, password)
         try {
             await axios.post('/api/auth/register', {
                 email,

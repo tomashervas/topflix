@@ -15,7 +15,7 @@ export async function POST(req: Request) {
 
     try {
         const {name, age, isKid, avatar } = await req.json()
-        console.log(name, age, isKid, avatar )
+        //console.log(name, age, isKid, avatar )
     
         const user = await prismadb.user.update({
             where: {

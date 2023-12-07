@@ -26,19 +26,19 @@ const FormClient = ({avatars, mail}: FormClientProps) => {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         setErrors(null)
-        isKid ? console.log(name, isKid, age, avatar) : console.log(name, isKid, avatar)
+        //isKid ? console.log(name, isKid, age, avatar) : console.log(name, isKid, avatar)
         name.length < 3 && setErrors(err => err ? [...err, 'El nombre tiene que tener al menos 3 caracteres'] : ['El nombre tiene que tener al menos 3 caracteres'])
         name.length === 0 && setErrors(err => err ? [...err, 'El nombre es obligatorio'] : ['El nombre es obligatorio'])
         avatar.length === 0 && setErrors(err => err ? [...err, 'Debes seleccionar un avatar'] : ['Debes seleccionar un avatar'])
         if(errors) return
-        console.log('sin errores')
+        //console.log('sin errores')
         const res = await axios.post('/api/auth/profiles', {
             name,
             isKid,
             age : !isKid ? null : age,
             avatar
         })
-        console.log(res)
+        //console.log(res)
         if(res.status === 201) {
             router.push(process.env.NEXT_PUBLIC_DOMAIN_URL + '/profiles')
         }

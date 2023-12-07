@@ -47,7 +47,7 @@ const MoviesPage = async ({searchParams}: {searchParams: { sort_by_name: string 
         return redirect(process.env.NEXT_PUBLIC_DOMAIN_URL + '/auth')
     }
 
-  console.log('desde movies ' + searchParams.sort_by_name)
+  //console.log('desde movies ' + searchParams.sort_by_name)
   const cookieStore = cookies()
   const limit = cookieStore.get('limitedAge')
 

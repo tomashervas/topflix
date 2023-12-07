@@ -27,7 +27,7 @@ const Player = ({ media, show, setShow, token }: PlayerProps) => {
 
   useEffect(() => {
     setMounted(true)
-    console.log(token)
+    //console.log(token)
   }, [])
 
 
