@@ -27,7 +27,7 @@ const MoviePlayer = ({media, token}: MoviePlayerProps) => {
     }
 
   return (
-    <div className="relative">
+    <div className="relative flex-1">
         <ButtonSolid setAction={() => setShowPlayer(true)}/>
         <Player media={media} show={showPlayer} setShow={setShowPlayer} token={token}/> 
     </div>

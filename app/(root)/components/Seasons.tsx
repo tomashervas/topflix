@@ -6,6 +6,7 @@ import Select from 'react-select'
 import Player from "./Player"
 import PlayButton from "./PlayButton"
 import Image from "next/image"
+import OpenWith from "./OpenWith"
 
 interface SeasonsProps {
     tv: TVShow,
@@ -39,16 +40,18 @@ const Seasons = ({ tv, token, isAdmin}: SeasonsProps) => {
                         {season.episodes.map((episode, index) => (
                             <div key={index} className="p-2 md:w-1/2 lg:w-1/3 xl:w-1/4">
                                 <div className="flex space-x-2">
-                                    <div className="w-36 overflow-hidden rounded-md">
-                                        <img className={`${episode.videoUrl ? 'brightness-100' : 'brightness-50'} aspect-[16/9] h-full object-cover`} src={episode?.still_path?.includes('null') ? tv?.backdropUrl! : episode?.still_path!} alt="" />
+                                    <div className="w-[100px] h-[60px] rounded-md overflow-hidden relative">
+                                        <Image fill className={`${episode.videoUrl ? 'brightness-100' : 'brightness-50'} rounded-md`} src={episode?.still_path?.includes('null') ? tv?.backdropUrl! : episode?.still_path!} alt="" />
                                     </div>
-                                    <div className="flex flex-col justify-between">
+                                    <div className="flex flex-col justify-between w-[200px]">
                                         <p>{episode.episode_number}- {episode.name}</p>
                                         {episode.runtime && <p className="text-zinc-400 text-xs">{episode.runtime} min.</p>}
-                                        {isAdmin &&episode.videoUrl && <PlayButton action={() => {
+                                        {isAdmin && episode.videoUrl && <div className="flex"> <PlayButton action={() => {
                                             setEpisode(tv?.seasons[0].season_number === 0 ? tv?.seasons[+season.season_number].episodes[+episode.episode_number! - 1] : tv?.seasons[+season.season_number - 1].episodes[+episode.episode_number! - 1])
                                             setShowPlayer(true)
-                                        }} />}
+                                        }} />
+                                            <OpenWith url={episode.videoUrl} token={token} isTv/></div>
+                                        }
                                     </div>
 
 

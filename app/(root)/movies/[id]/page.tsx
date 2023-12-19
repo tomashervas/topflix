@@ -12,6 +12,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { generateToken } from "@/lib/jwt";
+import OpenWith from "../../components/OpenWith";
 
 const MoviePage = async ({ params }: { params: { id: string } }) => {
 
@@ -21,9 +22,10 @@ const MoviePage = async ({ params }: { params: { id: string } }) => {
     }
 
     const token = generateToken(session.user!.email!, session.user!.email === process.env.ADMIN)
-    // const token = generateToken(session.user!.email!, false)
+    // const token = generateToken(session.user!.email!, true)
 
     const isAdmin = session.user!.email === process.env.ADMIN
+    // const isAdmin = true
 
     const movie = await prismadb.movie.findUnique({
         where: {
@@ -53,7 +55,11 @@ const MoviePage = async ({ params }: { params: { id: string } }) => {
                     <p>{movie?.duration} min</p>
                 </div>
 
-                {isAdmin && <MoviePlayer media={movie as Movie} token={token}/>}
+                {isAdmin && <div className="flex w-full md:w-1/2 gap-2">
+                        <MoviePlayer media={movie as Movie} token={token}/>
+                        <OpenWith url={movie?.videoUrl!} token={token} isTv={false}/>
+                    </div>
+                }
 
                 <div className="my-2">
                     <div tabIndex={1} className="line-clamp-4 focus:line-clamp-none"><span className="font-semibold">Sinopsis</span>: {movie?.overview}</div>
