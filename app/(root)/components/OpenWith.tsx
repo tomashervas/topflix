@@ -18,8 +18,6 @@ const OpenWith = ({url, token, isTv}: {url: string, token: string, isTv: boolean
   const shareUrl = async () => {
     try {
       await navigator.share({
-        title: 'Topflix',
-        text: 'Topflix',
         url: process.env.NEXT_PUBLIC_VIDEO_BASE_URL! + url + `?token=${token}`
       });
     } catch (error) {
@@ -30,12 +28,10 @@ const OpenWith = ({url, token, isTv}: {url: string, token: string, isTv: boolean
   return (
 
     <div>
-      { navigator.share !== undefined && 
-       isTv ?
+      { (navigator.share !== undefined) && 
+       (isTv ?
        <button onClick={shareUrl} className='flex justify-center items-center rounded-full self-start bg-zinc-700 text-white h-[24px] w-[42px] ml-4'><IoOpenOutline size={16}/></button> :
-       <button onClick={shareUrl} className="h-[42px] px-4 py-3 my-4 bg-red-500 text-white rounded-lg"><IoOpenOutline size={20} /></button>
-
-      
+       <button onClick={shareUrl} className="h-[42px] px-4 py-3 my-4 bg-red-500 text-white rounded-lg"><IoOpenOutline size={20} /></button>)
       }
     </div>
   )
