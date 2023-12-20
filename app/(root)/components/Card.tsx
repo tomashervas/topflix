@@ -7,6 +7,7 @@ import Image from "next/image"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import { FaCirclePlus, FaCheck } from 'react-icons/fa6'
+import { toast } from "react-toastify"
 interface CardProps {
   item: TVShow | Movie
   isMovie: boolean
@@ -39,17 +40,15 @@ const Card = ({ item, isMovie, grid}: CardProps) => {
 
   const toggleFavourite = async () => {
     if (isFavourite) {
-      console.log('ya no es favorito')
+      toast.success('Eliminado de favoritos', {autoClose: 2500,})
       setIsFavourite(false)
       const res = await axios.delete(isMovie ? `/api/favorites/${item.id}?profile=${profile.name}` : `/api/favoritestv/${item.id}?profile=${profile.name}`)
-      console.log(res.data)
 
     }
     else {
-      console.log('es favorito')
+      toast.success('Añadido a favoritos', {autoClose: 2500,})
       setIsFavourite(true)
       const res = await axios.post(isMovie ? `/api/favorites/${item.id}?profile=${profile.name}` : `/api/favoritestv/${item.id}?profile=${profile.name}`)
-      console.log(res.data)
     }
     mutate()
   }

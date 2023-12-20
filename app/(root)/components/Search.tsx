@@ -3,7 +3,7 @@ import { useDebounce } from '@/hooks/useDebounce'
 import useFetch from '@/hooks/useFetch'
 import { Movie, TVShow } from '@prisma/client'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { IoSearch } from 'react-icons/io5'
 
 
@@ -13,9 +13,16 @@ const Search = () => {
   const debouncedQuery = useDebounce(query, 500)
   const [showInput, setShowInput] = useState(false)
   const router = useRouter()
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const { data }: { data: {tv : TVShow[], movies: Movie[]} } = useFetch('/api/search?query=' + debouncedQuery)
-
+  
+  useEffect(() => {
+    if (showInput && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [showInput]);
+  
   const handleSearch = (e: any) => {
     if(e.target.value.length > 2) setQuery(e.target.value)
     else setQuery(null)
@@ -26,11 +33,12 @@ const Search = () => {
     setQuery(null)
     setShowInput(false)
   }
+
     
 
   return (
       <div className='flex justify-end items-center relative'>
-          {showInput && <input type="text" placeholder='Buscar...' className='w-28 md:w-48 h-8 border-0 focus:ring-0  text-zinc-400 bg-transparent focus:outline-none' onChange={handleSearch}/>}
+          {showInput && <input ref={inputRef} type="text" placeholder='Buscar...' className='w-28 md:w-48 h-8 border-0 focus:ring-0  text-zinc-400 bg-transparent' onChange={handleSearch}/>}
           <button onClick={()=>{
             setShowInput(!showInput)
             setQuery(null)
