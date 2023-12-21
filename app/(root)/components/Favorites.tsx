@@ -2,8 +2,6 @@
 
 import { useEffect, useState } from "react"
 import FavoritesList from "./FavoritesList"
-import useFetch from "@/hooks/useFetch"
-import { Movie } from "@prisma/client"
 import axios from "axios"
 
 type FavoritesProps = {
@@ -20,7 +18,6 @@ const Favorites = ({limitedAge}: FavoritesProps) => {
   useEffect(() => {
     setMounted(true)
 
-    
     axios.get(`/api/favorites?profile=${typeof localStorage !== 'undefined' && JSON.parse(localStorage.getItem('profile')!).name}`).then(res => {
       res.data.length === 0 ? setShowMovies(false) : setShowMovies(true)
     })

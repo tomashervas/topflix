@@ -26,6 +26,8 @@ export async function GET(request: Request) {
                 id: {
                     in: user!.profiles.find(p=>p.name===profile)?.favoriteIds
                 }
+            }, orderBy: {
+                createdAt: 'desc'
             }
         })
 
