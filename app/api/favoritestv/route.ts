@@ -29,6 +29,8 @@ export async function GET(request: Request) {
             }
         })
 
+        tvs.reverse()
+
         return new Response(JSON.stringify(tvs))
         
     } catch (error) {
