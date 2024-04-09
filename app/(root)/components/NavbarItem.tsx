@@ -25,7 +25,7 @@ const NavbarItem = ({children, link, setVisible}: NavbarItemProps) => {
       clearTVs()
       setSort(false)
       }} className="text-slate-100 hover:text-slate-400 font-semibold transition">
-        <Link className={`${pathname === link ? 'text-red-600' : ''}`} href={link}>
+        <Link className={`${pathname === link ? 'text-red-500 font-extrabold' : ''}`} href={link}>
             {children}
         </Link>
     </li>

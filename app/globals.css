@@ -4,11 +4,12 @@
 
 body {
   color: #f4f4f5;
-  @apply bg-zinc-900 h-screen overflow-x-hidden;
+  @apply bg-zinc-900 h-screen w-full overflow-x-hidden;
 }
 
 html {
   @apply h-screen;
+
 }
 
 .lds-ripple {
@@ -56,4 +57,9 @@ html {
     height: 72px;
     opacity: 0;
   }
+}
+
+/* override tailwind max-width issue  */
+img {
+  max-width: 5000px;
 }

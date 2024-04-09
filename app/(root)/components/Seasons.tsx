@@ -38,10 +38,11 @@ const Seasons = ({ tv, token, isAdmin}: SeasonsProps) => {
                 season.season_number === 0 ? null :
                     <div key={season.id_season} className="flex flex-col md:flex-row flex-wrap">
                         {season.episodes.map((episode, index) => (
+                            
                             <div key={index} className="p-2 md:w-1/2 lg:w-1/3 xl:w-1/4">
                                 <div className="flex space-x-2">
                                     <div className="w-[100px] h-[60px] rounded-md overflow-hidden relative">
-                                        <Image fill className={`${episode.videoUrl ? 'brightness-100' : 'brightness-50'} rounded-md`} src={episode?.still_path?.includes('null') ? tv?.backdropUrl! : episode?.still_path!} alt="" />
+                                        <img className={`${episode.videoUrl ? 'brightness-100' : 'brightness-50'} rounded-md`} src={episode?.still_path?.includes('null') ? tv?.backdropUrl?.replace('/original/', '/w300/') : episode?.still_path?.replace('/original/', '/w300/')} alt="" />
                                     </div>
                                     <div className="flex flex-col justify-between w-[200px]">
                                         <p>{episode.episode_number}- {episode.name}</p>
