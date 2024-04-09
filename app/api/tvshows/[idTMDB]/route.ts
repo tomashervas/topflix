@@ -52,3 +52,29 @@ export async function PUT(req: Request, { params }: { params: { idTMDB: string }
         return new NextResponse("Error" + error, { status: 500 })
     }
 }
+
+export async function DELETE(req: Request, { params }: { params: { idTMDB: string } }) {
+
+    const token = req.headers.get('Authorization')?.split(' ')[1]
+    const decoded = verifyToken(token || '')
+
+    if((decoded as JwtPayload).user  !== process.env.ADMIN) {
+        return new NextResponse('Unauthorized', { status: 403 })
+
+    }
+
+    const idTMDB = +params.idTMDB
+
+    try {
+        const tvshow = await prismadb.tVShow.delete({
+            where: {
+                idTMDB
+            }
+        })
+        return new NextResponse(JSON.stringify(tvshow), { status: 200 })
+    }catch (error) {
+        console.log(error)
+        return new NextResponse("Error" + error, { status: 500 })
+    }
+
+}
