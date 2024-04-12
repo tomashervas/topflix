@@ -47,8 +47,8 @@ const Search = () => {
               <div className='space-y-2'>
                 {data?.tv.map((item) => (
                     <div key={item.id} className='flex gap-4 cursor-pointer hover:bg-zinc-600' onClick={() => goDetails(`/tvshows/${item.id}`)}>
-                      <div className="w-24 md:w-36 overflow-hidden rounded-md">
-                          <img className={`aspect-[16/9] h-full object-cover` } src={item?.backdropUrl!} alt="" />
+                      <div className="w-24 h-16 rounded-md overflow-hidden">
+                          <img className={`w-full h-full object-cover` } src={item?.backdropUrl?.replace('/original/', '/w300/')} alt="" />
                       </div>
                       <p>{item.name}</p>
 
@@ -58,8 +58,8 @@ const Search = () => {
               <div className='space-y-2'>
                 {data?.movies.map((item) => (
                     <div key={item.id} className='flex gap-4 cursor-pointer hover:bg-zinc-600' onClick={() => goDetails(`/movies/${item.id}`)}>
-                      <div className="w-24 md:w-36 overflow-hidden rounded-md">
-                          <img className={`aspect-[16/9] h-full object-cover` } src={item?.backdropUrl!} alt="" />
+                      <div className="w-24 h-16 rounded-md overflow-hidden">
+                          <img className={`w-full h-full object-cover` } src={item?.backdropUrl?.replace('/original/', '/w300/')} alt="" />
                       </div>
                       <p>{item.title}</p>
 
