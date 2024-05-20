@@ -4,7 +4,7 @@ import { Episode, TVShow } from '@prisma/client'
 import { verifyToken } from '@/lib/jwt'
 import { JwtPayload } from 'jsonwebtoken'
 
-export async function PUT(req: Request, { params }: { params: { idTMDB: string } }) {
+export async function PATCH(req: Request, { params }: { params: { idTMDB: string } }) {
 
     const token = req.headers.get('Authorization')?.split(' ')[1]
     const decoded = verifyToken(token || '')
@@ -51,6 +51,40 @@ export async function PUT(req: Request, { params }: { params: { idTMDB: string }
         console.log(error)
         return new NextResponse("Error" + error, { status: 500 })
     }
+}
+
+export async function PUT(req: Request, { params }: { params: { idTMDB: string } }) {
+
+    const token = req.headers.get('Authorization')?.split(' ')[1]
+    const decoded = verifyToken(token || '')
+
+    if((decoded as JwtPayload).user  !== process.env.ADMIN) {
+        return new NextResponse('Unauthorized', { status: 403 })
+    }
+
+    const idTMDB = +params.idTMDB
+    const tv: TVShow = await req.json()
+
+    try {
+        if(!tv) {
+            return new NextResponse("Invalid request", {status: 400})
+        }
+
+        const updatedTvshow = await prismadb.tVShow.update({
+            where: {
+                idTMDB
+            },
+            data: {
+                ...tv
+            }
+        })
+        console.log('Stored tvshow', updatedTvshow.nameShow)
+        return new NextResponse(JSON.stringify(updatedTvshow), {status: 200})
+    } catch (error) {
+        console.log(error)
+        return new NextResponse("Error" + error, { status: 500 })
+    }
+
 }
 
 export async function DELETE(req: Request, { params }: { params: { idTMDB: string } }) {
