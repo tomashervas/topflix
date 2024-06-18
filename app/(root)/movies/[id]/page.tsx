@@ -13,6 +13,7 @@ import { authOptions } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { generateToken } from "@/lib/jwt";
 import OpenWith from "../../components/OpenWith";
+import FavoriteToogle from "../../components/FavoriteToogle";
 
 const MoviePage = async ({ params }: { params: { id: string } }) => {
 
@@ -45,7 +46,10 @@ const MoviePage = async ({ params }: { params: { id: string } }) => {
             <BillboardVideo colors={[colorA, colorB]} media={movie as Movie} limitedAge={limitedAge } />
             <div className="md:absolute top-[30vh] left-8 p-4 pb-0">
                 <p className="text-red-600 text-xl md:text-2xl shadow">Película</p>
-                <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold py-1">{movie?.title}</h1>
+                <div>
+                    <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold py-1">{movie?.title}</h1>
+                    <FavoriteToogle item={movie as Movie} isMovie/>
+                </div>
             </div>
             <div className="p-4 pt2">
                 <p>Director: {movie?.director.map((director) => director).join(', ')}</p>

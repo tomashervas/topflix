@@ -14,6 +14,8 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { generateToken } from "@/lib/jwt";
+import BtnFavorite from "../../components/BtnFavorite";
+import FavoriteToogle from "../../components/FavoriteToogle";
 
 
 
@@ -47,7 +49,10 @@ const TVShowPage = async ({ params }: { params: { id: string } }) => {
             <BillboardVideo media={tv as TVShow} colors={[colorA, colorB]} limitedAge={limitedAge}/>
             <div className="md:absolute top-[30vh] left-8 p-4 pb-0">
                 <p className="text-red-600 text-xl md:text-2xl shadow">Serie</p>
-                <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold py-1">{tv?.nameShow}</h1>
+                <div>
+                    <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold py-1">{tv?.nameShow}</h1>
+                    <FavoriteToogle item={tv as TVShow} isMovie={false}/>
+                </div>
             </div>
             <div className="p-4 pt-2 md:p-8">
                 <p>Creado por: {tv?.created_by.map((director) => director).join(', ')}</p>

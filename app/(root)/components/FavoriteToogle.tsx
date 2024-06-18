@@ -1,23 +1,19 @@
 "use client"
 
+import { useEffect, useState } from "react"
+import BtnFavorite from "./BtnFavorite"
 import useFetch from "@/hooks/useFetch"
 import { Movie, TVShow } from "@prisma/client"
-import axios from "axios"
-import Image from "next/image"
 import { useRouter } from "next/navigation"
-import { useEffect, useState } from "react"
-import { FaCirclePlus, FaCheck } from 'react-icons/fa6'
 import { toast } from "react-toastify"
-import BtnFavorite from "./BtnFavorite"
-interface CardProps {
-  item: TVShow | Movie
-  isMovie: boolean
-  grid?: boolean
-}
+import axios from "axios"
 
-const Card = ({ item, isMovie, grid}: CardProps) => {
-
-  const [mounted, setMounted] = useState(false)
+interface FavoriteToogleProps {
+    item: TVShow | Movie
+    isMovie: boolean
+  }
+const FavoriteToogle = ({ item, isMovie }: FavoriteToogleProps) => {
+const [mounted, setMounted] = useState(false)
   if (!mounted) {
     setMounted(true)
   }
@@ -53,14 +49,10 @@ const Card = ({ item, isMovie, grid}: CardProps) => {
     }
     mutate()
   }
-
   return (
-    <div className={`group rounded-md  bg-zinc-900 relative`}>
-      <img className="h-44 md:h-56 w-28 md:w-36 object-cover cursor-pointer rounded-md shadow-xl transition group-hover:opacity-70" src={item.thumbnailUrl?.replace('original', 'w342')} alt="" />
-      <div onClick={() => router.push(`${isMovie ? '/movies' : '/tvshows'}/${item.id!}`)} className="bg-gradient-to-t from-black via-transparent via-30%  to-transparent  absolute top-0 left-0 cursor-pointer h-full w-full"></div>
-      <div className="absolute bottom-0 p-1 text-xs sm:text-base ">{isMovie ? (item as Movie).title : (item as TVShow).name}</div>
-      <BtnFavorite toggleFavourite={toggleFavourite} isFavourite={isFavourite} />
+    <div className="relative bottom-2">
+        <BtnFavorite toggleFavourite={toggleFavourite} isFavourite={isFavourite} />
     </div>
   )
 }
-export default Card
+export default FavoriteToogle
