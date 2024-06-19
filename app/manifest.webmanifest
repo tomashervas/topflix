@@ -1,7 +1,7 @@
 {
     "theme_color": "#010101",
     "background_color": "#010101",
-    "display": "standalone",
+    "display": "fullscreen",
     "scope": "/",
     "start_url": "/",
     "name": "Topflix",

@@ -50,7 +50,7 @@ const [mounted, setMounted] = useState(false)
     mutate()
   }
   return (
-    <div className="relative bottom-2">
+    <div className="relative bottom-[6px]">
         <BtnFavorite toggleFavourite={toggleFavourite} isFavourite={isFavourite} />
     </div>
   )
