@@ -23,15 +23,17 @@ const BillboardVideo = ({media, colors, limitedAge }: BillboardVideoProps) => {
     const [poster, setPoster] = useState('')
 
     useEffect(() => {
-      setMounted(true)
-      
-
-      if(screen.width > 768) {
-        setPoster(media?.backdropUrl!)
-    } else {
-        setPoster(media?.thumbnailUrl)
-    }
-
+      if (media && media.backdropUrl) {
+        setMounted(true)
+        if (screen.width > 1500 ) {
+          setPoster(media.backdropUrl)
+        }
+        else if (screen.width > 768) {
+          setPoster(media.backdropUrl.replace('original', 'w1280'))
+        } else {
+          setPoster(media.thumbnailUrl.replace('original', 'w500'))
+        }
+      }
     }, [media])
 
     if (!mounted) {
@@ -43,8 +45,8 @@ const BillboardVideo = ({media, colors, limitedAge }: BillboardVideoProps) => {
         {media?.trailer ?
         <iframe className="mt-12 mb-4 w-full aspect-[16/9] h-[40vh] md:h-[56.25vw] object-cover overflow-hidden" src={media?.trailer}></iframe> :
         <div className={'p-6 mt-12 md:p-0'} style={gradientStyle}>
-          <div className="w-full h-96 md:h-[56.25vw] overflow-hidden rounded-lg relative">
-            <Image fill src={poster} className="object-cover" alt={media.name}/>
+          <div className="w-full h-[55vh] md:h-[56.25vw] overflow-hidden rounded-lg relative">
+            <img src={poster} alt={media.name} className="w-full object-cover" />
           </div>
         </div>}
     </div>

@@ -24,8 +24,8 @@ const NavMenu = () => {
       }, [])
 
   return (
-    <div className="flex items-center space-x-4 relative">
-        {visible && <ul className="flex flex-col text-white bg-zinc-900/80 p-4 md:p-0 lg:bg-transparent lg:flex-row absolute top-8 left-0 lg:space-x-4 lg:static ml-8 transition">
+    <div className="flex items-center relative">
+        {visible && <ul className="flex flex-col space-y-4 lg:space-y-0 text-white bg-zinc-900/80 p-6 lg:p-0 lg:bg-transparent lg:flex-row absolute top-8 left-0 lg:space-x-4 lg:static ml-8 transition">
             <NavbarItem setVisible={setVisible} link="/">Home</NavbarItem>
             <NavbarItem setVisible={setVisible} link="/tvshows">Series</NavbarItem>
             <NavbarItem setVisible={setVisible} link="/movies">Películas</NavbarItem>
