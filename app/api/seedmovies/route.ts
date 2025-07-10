@@ -12,7 +12,9 @@ export async function POST(req: Request) {
     const token = req.headers.get('Authorization')?.split(' ')[1]
     const decoded = verifyToken(token || '')
 
-    if((decoded as JwtPayload).user  !== process.env.ADMIN) {
+    const adminEmails = process.env.ADMIN?.split(',').map(email => email.trim()) || [];
+
+    if (!adminEmails.includes((decoded as JwtPayload).user)) {
         return new NextResponse('Unauthorized', { status: 403 })
     }
 

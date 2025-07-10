@@ -1,15 +1,65 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import prismadb from '@/lib/prismadb'
 import { Episode, TVShow } from '@prisma/client'
 import { verifyToken } from '@/lib/jwt'
 import { JwtPayload } from 'jsonwebtoken'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '@/lib/auth'
+import jwt from 'jsonwebtoken';
+
+export async function GET(request: NextRequest, { params }: { params: { idTMDB:string } }) {
+    try {
+        // Check NextAuth session
+        const session = await getServerSession(authOptions);
+        let isAuthenticated = !!session;
+
+        // If no session, check for JWT
+        if (!isAuthenticated) {
+            const authHeader = request.headers.get('authorization');
+            if (authHeader?.startsWith('Bearer ')) {
+                const token = authHeader.substring(7);
+                try {
+                    jwt.verify(token, process.env.JWT_SECRET as string);
+                    isAuthenticated = true;
+                } catch (error) {
+                    // Invalid token
+                }
+            }
+        }
+
+        if (!isAuthenticated) {
+            return new NextResponse('Unauthorized', { status: 401 });
+        }
+
+        const { idTMDB } = params;
+        if (!idTMDB) {
+            return new NextResponse('TV Show ID is required', { status: 400 });
+        }
+
+        const tvShow = await prismadb.tVShow.findUnique({
+            where: { id: idTMDB },
+        });
+
+        if (!tvShow) {
+            return new NextResponse('TV Show not found', { status: 404 });
+        }
+
+        return NextResponse.json(tvShow);
+
+    } catch (error) {
+        console.error('[TVSHOW_GET]', error);
+        return new NextResponse('Internal Server Error', { status: 500 });
+    }
+}
 
 export async function PATCH(req: Request, { params }: { params: { idTMDB: string } }) {
 
     const token = req.headers.get('Authorization')?.split(' ')[1]
     const decoded = verifyToken(token || '')
 
-    if((decoded as JwtPayload).user  !== process.env.ADMIN) {
+    const adminEmails = process.env.ADMIN?.split(',').map(email => email.trim()) || [];
+
+    if (!adminEmails.includes((decoded as JwtPayload).user)) {
         return new NextResponse('Unauthorized', { status: 403 })
     }
 
@@ -58,7 +108,9 @@ export async function PUT(req: Request, { params }: { params: { idTMDB: string }
     const token = req.headers.get('Authorization')?.split(' ')[1]
     const decoded = verifyToken(token || '')
 
-    if((decoded as JwtPayload).user  !== process.env.ADMIN) {
+    const adminEmails = process.env.ADMIN?.split(',').map(email => email.trim()) || [];
+
+    if (!adminEmails.includes((decoded as JwtPayload).user)) {
         return new NextResponse('Unauthorized', { status: 403 })
     }
 
@@ -92,7 +144,9 @@ export async function DELETE(req: Request, { params }: { params: { idTMDB: strin
     const token = req.headers.get('Authorization')?.split(' ')[1]
     const decoded = verifyToken(token || '')
 
-    if((decoded as JwtPayload).user  !== process.env.ADMIN) {
+    const adminEmails = process.env.ADMIN?.split(',').map(email => email.trim()) || [];
+
+    if (!adminEmails.includes((decoded as JwtPayload).user)) {
         return new NextResponse('Unauthorized', { status: 403 })
 
     }

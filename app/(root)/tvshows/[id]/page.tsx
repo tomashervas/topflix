@@ -27,9 +27,11 @@ const TVShowPage = async ({ params }: { params: { id: string } }) => {
         return redirect(process.env.NEXT_PUBLIC_DOMAIN_URL + '/auth')
     }
 
-    const token = generateToken(session.user!.email!, session.user!.email === process.env.ADMIN)
+    const adminEmails = process.env.ADMIN?.split(',').map(email => email.trim()) || [];
+    const isAdmin = adminEmails.includes(session.user!.email!);
 
-    const isAdmin = session.user!.email === process.env.ADMIN
+    const token = generateToken(session.user!.email!, isAdmin)
+
 
     const cookieStore = cookies()
     const limit = cookieStore.get('limitedAge')

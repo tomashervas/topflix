@@ -22,11 +22,11 @@ const MoviePage = async ({ params }: { params: { id: string } }) => {
         return redirect(process.env.NEXT_PUBLIC_DOMAIN_URL + '/auth')
     }
 
-    const token = generateToken(session.user!.email!, session.user!.email === process.env.ADMIN)
-    // const token = generateToken(session.user!.email!, true)
+    const adminEmails = process.env.ADMIN?.split(',').map(email => email.trim()) || [];
+    const isAdmin = adminEmails.includes(session.user!.email!);
 
-    const isAdmin = session.user!.email === process.env.ADMIN
-    // const isAdmin = true
+    const token = generateToken(session.user!.email!, isAdmin)
+    // const token = generateToken(session.user!.email!, true)
 
     const movie = await prismadb.movie.findUnique({
         where: {

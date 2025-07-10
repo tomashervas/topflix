@@ -5,12 +5,32 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { verifyToken } from '@/lib/jwt';
 import { JwtPayload } from 'jsonwebtoken';
+import jwt from 'jsonwebtoken'; // Ensure jwt is imported directly
 
 
 export async function GET(request: Request) {
     const session = await getServerSession(authOptions);
-    if(!session) {
-        return new Response("Unauthorized", {status: 401})
+    let isAuthenticated = false;
+    let userId: string | undefined;
+
+    if (session) {
+        isAuthenticated = true;
+    } else {
+        const authorizationHeader = request.headers.get('authorization');
+        if (authorizationHeader && authorizationHeader.startsWith('Bearer ')) {
+            const token = authorizationHeader.substring(7);
+            try {
+                const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as { userId: string, email: string };
+                userId = decoded.userId;
+                isAuthenticated = true;
+            } catch (error) {
+                console.error("JWT verification failed:", error);
+            }
+        }
+    }
+
+    if (!isAuthenticated) {
+        return new Response("Unauthorized", { status: 401 })
     }
 
     const { searchParams } = new URL(request.url)
@@ -42,7 +62,9 @@ export async function POST(req: Request) {
     const token = req.headers.get('Authorization')?.split(' ')[1]
     const decoded = verifyToken(token || '')
 
-    if((decoded as JwtPayload).user  !== process.env.ADMIN) {
+    const adminEmails = process.env.ADMIN?.split(',').map(email => email.trim()) || [];
+
+    if (!adminEmails.includes((decoded as JwtPayload).user)) {
         return new NextResponse('Unauthorized', { status: 403 })
     }
 
