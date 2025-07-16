@@ -40,29 +40,9 @@ export async function POST(request: NextRequest) {
             return new NextResponse('Forbidden', { status: 403 });
         }
 
-        const { mediaId, mediaType } = await request.json();
-
-        if (!mediaId || !mediaType) {
-            return new NextResponse('mediaId and mediaType are required', { status: 400 });
-        }
-
-        let videoUrl: string | null | undefined = null;
-
-        if (mediaType === 'movie') {
-            const movie = await prismadb.movie.findUnique({ where: { id: mediaId } });
-            videoUrl = movie?.videoUrl;
-        } else if (mediaType === 'tvshow') {
-            const tvShow = await prismadb.tVShow.findUnique({ where: { id: mediaId } });
-            videoUrl = tvShow?.seasons?.[0]?.episodes?.[0]?.videoUrl;
-        }
-
-        if (!videoUrl) {
-            return new NextResponse('Video URL not found', { status: 404 });
-        }
-
         const videoToken = generateToken(userEmail, isAdmin);
 
-        return NextResponse.json({ videoUrl, videoToken });
+        return NextResponse.json({ videoToken });
 
     } catch (error) {
         console.error('[VIDEO_TOKEN_POST]', error);

@@ -4,12 +4,29 @@ import { Movie, TVShow } from '@prisma/client'
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 import { cookies } from 'next/headers';
+import jwt from 'jsonwebtoken';
 
 export async function GET(request: Request){
+    let isAuthenticated = false;
     const session = await getServerSession(authOptions);
-    if(!session) {
-        return new Response("Unauthorized", {status: 401})
-    }
+    if(session) {
+        isAuthenticated = true;
+    } else {
+            const authorizationHeader = request.headers.get('authorization');
+            if (authorizationHeader && authorizationHeader.startsWith('Bearer ')) {
+                const token = authorizationHeader.substring(7);
+                try {
+                    const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as { userId: string, email: string };
+                    isAuthenticated = true;
+                } catch (error) {
+                    console.error("JWT verification failed:", error);
+                }
+            }
+        }
+    
+        if (!isAuthenticated) {
+            return new Response("Unauthorized", { status: 401 })
+        }
 
     const { searchParams } = new URL(request.url)
     const query = searchParams.get('query')

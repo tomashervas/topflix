@@ -35,6 +35,9 @@ export async function GET(request: Request) {
 
     const { searchParams } = new URL(request.url)
     const limitedAge = (!searchParams.get('limitedAge') || searchParams.get('limitedAge') === 'null') ? 20 : Number(searchParams.get('limitedAge'))
+    const page = Number(searchParams.get('page')) || 1; // Default to page 1
+    const itemsPerPage = 20; // Number of items per page
+    const skip = (page - 1) * itemsPerPage;
 
     
     try {
@@ -47,7 +50,8 @@ export async function GET(request: Request) {
             orderBy: {
                 createdAt: 'desc'
             },
-            take: 20
+            skip: skip,
+            take: itemsPerPage
         })
         return new Response(JSON.stringify(tv))
 
