@@ -32,8 +32,16 @@ export async function GET(request: Request){
     const query = searchParams.get('query')
 
     const cookieStore = cookies()
+    
     const limit = cookieStore.get('limitedAge')
-    const limitedAge = (!limit || limit.value === 'null') ? 20 : Number(limit.value)
+
+    let limitedAge = 20;
+    if (limit) {
+        limitedAge = Number(limit.value)
+    } else if (searchParams.get('limitedAge') && searchParams.get('limitedAge') !== 'null') {
+        const limitedAgeParam = searchParams.get('limitedAge')
+        limitedAge = Number(limitedAgeParam)
+    }
 
     if(!query) {
         return new Response("Invalid request", {status: 400})
