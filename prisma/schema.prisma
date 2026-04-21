@@ -25,6 +25,7 @@ model User {
 }
 
 type Profile {
+  id String @default(uuid())
   name String
   image String
   isKid Boolean
@@ -145,4 +146,35 @@ type Episode {
   season_number Int
   show_id Int?
   videoUrl String?
+}
+
+model WatchingProgress {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  userId String @db.ObjectId
+  profileId String
+
+  mediaType MediaType
+  mediaId String @db.ObjectId
+
+  seasonNumber Int?
+  episodeNumber Int?
+
+  duration Int
+  watching Int
+
+  lastWatchedAt DateTime @default(now())
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId, profileId])
+  @@index([userId, profileId, mediaId])
+
+  @@unique([userId, profileId, mediaId, seasonNumber, episodeNumber])
+}
+
+enum MediaType {
+  MOVIE
+  TVSHOW
 }
