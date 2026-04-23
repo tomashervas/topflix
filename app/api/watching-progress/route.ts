@@ -227,3 +227,48 @@ export async function GET(request: Request) {
     return new Response("Internal Server Error", { status: 500 });
   }
 }
+
+export async function DELETE(request: Request) {
+  try {
+    const user = await getAuthenticatedUser(request);
+
+    if (!user) {
+      return new Response("Unauthorized", { status: 401 });
+    }
+
+    const { searchParams } = new URL(request.url);
+    const profileId = searchParams.get("profileId");
+    const mediaId = searchParams.get("mediaId");
+
+    if (!profileId || !mediaId) {
+      return new Response("profileId and mediaId are required", {
+        status: 400,
+      });
+    }
+
+    // Check if profile belongs to user
+    const profileExists = user.profiles.some(
+      (p) => p.id === profileId || p.name === profileId,
+    );
+    if (!profileExists) {
+      return new Response("Profile not found", { status: 404 });
+    }
+
+    // Delete all progress records for this user, profile and mediaId
+    const result = await prismadb.watchingProgress.deleteMany({
+      where: {
+        userId: user.id,
+        profileId: profileId,
+        mediaId: mediaId,
+      },
+    });
+
+    return NextResponse.json({
+      message: "Progress deleted successfully",
+      count: result.count,
+    });
+  } catch (error) {
+    console.error("Error in DELETE /api/watching-progress:", error);
+    return new Response("Internal Server Error", { status: 500 });
+  }
+}
