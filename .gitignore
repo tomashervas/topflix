@@ -38,3 +38,5 @@ next-env.d.ts
 
 /.history
 watch.md
+repomix*.xml
+*blueprint*.md
