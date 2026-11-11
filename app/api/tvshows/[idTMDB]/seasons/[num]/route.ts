@@ -50,3 +50,5 @@ export async function PUT(req: Request, { params }: { params: { idTMDB: string, 
         return new NextResponse("Error" + error, { status: 500 })
     }
 }
+
+export { PUT as PATCH }

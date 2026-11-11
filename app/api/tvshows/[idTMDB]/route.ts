@@ -70,22 +70,62 @@ export async function PATCH(req: Request, { params }: { params: { idTMDB: string
         if (!episode) {
             return new NextResponse("Invalid request", { status: 400 })
         }
-        const tvshow = await prismadb.tVShow.update({
-            where: {
-                idTMDB
-            },
-            data: {
-                seasons: {
-                    updateMany: {
-                        where: {
-                            season_number: episode.season_number
-                        }, data: {
-                            episodes: {
-                                updateMany: {
-                                    where: {
-                                        id_episode: episode.id_episode
-                                    },
-                                    data: {
+
+        const existingShow = await prismadb.tVShow.findUnique({
+            where: { idTMDB }
+        })
+
+        if (!existingShow) {
+            return new NextResponse("TV Show not found", { status: 404 })
+        }
+
+        const targetSeason = existingShow.seasons.find(
+            s => s.season_number === episode.season_number
+        )
+        const episodeExists = targetSeason?.episodes.some(
+            e => (episode.id_episode && e.id_episode === episode.id_episode) ||
+                 (episode.episode_number && e.episode_number === episode.episode_number)
+        )
+
+        if (episodeExists) {
+            await prismadb.tVShow.update({
+                where: { idTMDB },
+                data: {
+                    updatedAt: new Date(),
+                    seasons: {
+                        updateMany: {
+                            where: {
+                                season_number: episode.season_number
+                            },
+                            data: {
+                                episodes: {
+                                    updateMany: {
+                                        where: {
+                                            episode_number: episode.episode_number
+                                        },
+                                        data: {
+                                            ...episode
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            })
+        } else {
+            await prismadb.tVShow.update({
+                where: { idTMDB },
+                data: {
+                    updatedAt: new Date(),
+                    seasons: {
+                        updateMany: {
+                            where: {
+                                season_number: episode.season_number
+                            },
+                            data: {
+                                episodes: {
+                                    push: {
                                         ...episode
                                     }
                                 }
@@ -93,8 +133,9 @@ export async function PATCH(req: Request, { params }: { params: { idTMDB: string
                         }
                     }
                 }
-            }
-        })
+            })
+        }
+
         console.log(episode.videoUrl)
         return new NextResponse(JSON.stringify(episode.videoUrl), { status: 200 })
     } catch (error) {

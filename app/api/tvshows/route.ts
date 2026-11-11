@@ -78,8 +78,8 @@ export async function GET(request: Request) {
         });
     }
 
-    // Ordenación dinámica
-    let orderBy: Prisma.TVShowOrderByWithRelationInput = { createdAt: "desc" };
+    // Ordenación dinámica: 'recent' usa updatedAt para que series con nuevos capítulos suban al #1
+    let orderBy: Prisma.TVShowOrderByWithRelationInput = { updatedAt: "desc" };
     switch (sortBy) {
         case "release_date":
             orderBy = { first_air_date: "desc" };
@@ -92,7 +92,7 @@ export async function GET(request: Request) {
             break;
         case "recent":
         default:
-            orderBy = { createdAt: "desc" };
+            orderBy = { updatedAt: "desc" };
             break;
     }
 

@@ -10,6 +10,7 @@ type MediaInfo = {
   nameShow?: string;
   thumbnailUrl: string;
   seasons?: any[];
+  updatedAt?: Date;
 };
 
 async function getAuthenticatedUser(request: Request) {
@@ -175,6 +176,9 @@ export async function GET(request: Request) {
       progressList.map(async (progress) => {
         let mediaInfo: MediaInfo | null = null;
         let hasNextEpisode = false;
+        let showUpdatedAt: Date | null = null;
+        let latestSeasonNumber: number | null = null;
+        let latestEpisodeNumber: number | null = null;
 
         if (progress.mediaType === "MOVIE") {
           mediaInfo = await prismadb.movie.findUnique({
@@ -184,27 +188,54 @@ export async function GET(request: Request) {
         } else {
           mediaInfo = await prismadb.tVShow.findUnique({
             where: { id: progress.mediaId },
-            select: { nameShow: true, thumbnailUrl: true, seasons: true },
+            select: { nameShow: true, thumbnailUrl: true, seasons: true, updatedAt: true },
           });
+
+          showUpdatedAt = mediaInfo?.updatedAt ?? null;
 
           if (mediaInfo?.seasons) {
             const currentS = progress.seasonNumber ?? 0;
             const currentE = progress.episodeNumber ?? 0;
 
-            // Check if there's a next episode in the current season
+            // Calcular el último episodio disponible (con videoUrl != null) en toda la serie
+            const validSeasons = mediaInfo.seasons
+              .filter((s: any) => (s.season_number ?? 0) > 0 && Array.isArray(s.episodes))
+              .sort((a: any, b: any) => a.season_number - b.season_number);
+
+            for (const s of validSeasons) {
+              const availableEps = s.episodes
+                .filter((e: any) => e.videoUrl != null && String(e.videoUrl).trim() !== "")
+                .sort((a: any, b: any) => (a.episode_number ?? 0) - (b.episode_number ?? 0));
+
+              if (availableEps.length > 0) {
+                const lastEp = availableEps[availableEps.length - 1];
+                latestSeasonNumber = s.season_number;
+                latestEpisodeNumber = lastEp.episode_number ?? null;
+              }
+            }
+
+            // Check if there's a next episode con videoUrl disponible en la temporada actual
             const currentSeason = mediaInfo.seasons.find(
-              (s) => s.season_number === currentS,
+              (s: any) => s.season_number === currentS,
             );
             const moreEpisodesInSeason = currentSeason?.episodes.some(
-              (e: any) => (e.episode_number ?? 0) > currentE,
+              (e: any) =>
+                (e.episode_number ?? 0) > currentE &&
+                e.videoUrl != null &&
+                String(e.videoUrl).trim() !== "",
             );
 
             if (moreEpisodesInSeason) {
               hasNextEpisode = true;
             } else {
-              // Check if there's any subsequent season with episodes
+              // Check if there's any subsequent season with available episodes
               hasNextEpisode = mediaInfo.seasons.some(
-                (s) => s.season_number > currentS,
+                (s: any) =>
+                  s.season_number > currentS &&
+                  Array.isArray(s.episodes) &&
+                  s.episodes.some(
+                    (e: any) => e.videoUrl != null && String(e.videoUrl).trim() !== "",
+                  ),
               );
             }
           }
@@ -216,7 +247,12 @@ export async function GET(request: Request) {
           nameShow:
             progress.mediaType === "TVSHOW" ? mediaInfo?.nameShow : null,
           thumbnailUrl: mediaInfo?.thumbnailUrl,
-          ...(progress.mediaType === "TVSHOW" && { hasNextEpisode }),
+          ...(progress.mediaType === "TVSHOW" && {
+            hasNextEpisode,
+            showUpdatedAt,
+            latestSeasonNumber,
+            latestEpisodeNumber,
+          }),
         };
       }),
     );
